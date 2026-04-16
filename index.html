@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hey June</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+NO&family=Cormorant:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+/* =====================================================
+   HEY JUNE — typographic, editorial, brutalist-soft
+   ===================================================== */
+:root {
+  --bg:          #F4F0E4;
+  --surface:     #FAF7EE;
+  --chrome:      #E6E0CC;
+  --ink:         #1A1810;
+  --ink-2:       #38352A;
+  --muted:       #7A7660;
+  --muted-2:     #B0AC96;
+  --line:        #D8D2BE;
+  --line-strong: #B8B2A0;
+  --green:       #3E6B4C;
+  --green-soft:  #E8F2E4;
+  --green-light: #C8DEC0;
+  --ochre:       #A88230;
+  --ochre-soft:  #F2E8CC;
+  --sepia:       #8C6840;
+  --chord:       #2C5C3E;
+  --tag-bg:      #D4E8C8;
+  --tag-ink:     #264832;
+  --danger:      #B84040;
+  --danger-soft: #F5E4E4;
+}
+[data-theme="dark"] {
+  --bg:          #111410;
+  --surface:     #191C16;
+  --chrome:      #0C0F0A;
+  --ink:         #EDE8D4;
+  --ink-2:       #C8C4AE;
+  --muted:       #888470;
+  --muted-2:     #504E42;
+  --line:        #282C22;
+  --line-strong: #38403A;
+  --green:       #7AB882;
+  --green-soft:  #182418;
+  --green-light: #1E3020;
+  --ochre:       #C8A040;
+  --ochre-soft:  #221A0A;
+  --sepia:       #B8905A;
+  --chord:       #8EC88A;
+  --tag-bg:      #1C2E1A;
+  --tag-ink:     #8ABF7A;
+  --danger:      #D06060;
+  --danger-soft: #2A1818;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Sora', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
+}
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+.mi { font-family: 'Material Icons Round'; font-style: normal; font-size: 20px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; text-transform: none; letter-spacing: 0; }
+
+/* ===================================================
+   BROWSE
+   =================================================== */
+.masthead {
+  padding: 24px 32px 18px;
+  border-bottom: 3px solid var(--ink);
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 16px;
+  background: var(--surface);
+}
+.wordmark { display: flex; flex-direction: column; gap: 10px; }
+.wordmark-title {
+  font-family: 'Playwrite NO', cursive;
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 400; font-style: normal;
+  line-height: 1; letter-spacing: 0;
+  color: var(--sepia);
+}
+.wordmark-sub {
+  font-family: 'Sora', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--muted); line-height: 1;
+}
+.masthead-right { display: flex; align-items: center; gap: 10px; }
+
+.icon-round {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line-strong); background: transparent;
+  color: var(--muted); display: flex; align-items: center; justify-content: center;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
+}
+.icon-round:hover { color: var(--ink); background: var(--green-soft); border-color: var(--ink); }
+
+.ui-btn {
+  font-family: 'Sora', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  color: var(--muted); padding: 8px 14px;
+  border: 1px solid var(--line-strong); border-radius: 3px;
+  background: transparent; transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.ui-btn:hover { color: var(--ink); border-color: var(--ink); background: var(--green-soft); }
+.ui-btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ui-btn.primary:hover { background: var(--green); border-color: var(--green); }
+.ui-btn.danger { color: var(--danger); border-color: var(--danger); }
+.ui-btn.danger:hover { background: var(--danger-soft); }
+
+/* Search */
+.search-strip {
+  border-bottom: 1px solid var(--line);
+  padding: 0 32px;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface);
+}
+.search-strip input {
+  flex: 1; border: 0; background: transparent;
+  font-family: 'Cormorant', serif; font-size: 26px; font-style: italic;
+  color: var(--ink); padding: 18px 0; outline: none;
+}
+.search-strip input::placeholder { color: var(--muted-2); }
+
+/* Column headers */
+.list-header {
+  display: grid;
+  grid-template-columns: 56px 1fr 140px 56px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.list-header span {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted-2);
+  padding: 10px 0;
+}
+/* "Title" spans art + title columns so it aligns with album art left edge */
+.list-header .hdr-title { grid-column: 1 / 3; }
+.list-header .hdr-key   { text-align: right; grid-column: 3; }
+.list-header .hdr-edit  { grid-column: 4; }
+
+/* Song rows */
+.song-list { display: flex; flex-direction: column; }
+
+.song-entry {
+  display: grid;
+  grid-template-columns: 56px 1fr 140px 56px;
+  align-items: center;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer; width: 100%; text-align: left;
+  color: var(--ink); background: transparent;
+  transition: background 0.1s;
+  min-height: 72px;
+  position: relative;
+}
+.song-entry:hover { background: var(--green-soft); }
+.song-entry:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+.song-entry.featured {
+  min-height: 0; padding-top: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  grid-template-columns: 96px 1fr 140px 56px;
+}
+
+/* Thumbnail in rows */
+.entry-art {
+  width: 44px; height: 44px;
+  border-radius: 5px; overflow: hidden;
+  flex-shrink: 0; background: var(--line);
+  display: flex; align-items: center; justify-content: center;
+}
+.song-entry.featured .entry-art {
+  width: 84px; height: 84px; border-radius: 8px;
+}
+.entry-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.entry-art svg { width: 100%; height: 100%; display: block; }
+
+.entry-main { padding: 0; min-width: 0; }
+.entry-title {
+  font-family: 'Cormorant', Georgia, serif; font-weight: 500;
+  line-height: 1; color: var(--ink); display: block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.song-entry:not(.featured) .entry-title { font-size: clamp(26px, 3.2vw, 38px); }
+.song-entry.featured .entry-title { font-size: clamp(48px, 6.5vw, 82px); font-style: italic; line-height: 0.95; white-space: normal; }
+.entry-artist {
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 500;
+  color: var(--muted); letter-spacing: 0.3px; margin-top: 5px; display: block;
+}
+.song-entry.featured .entry-artist { font-size: 12px; margin-top: 10px; }
+
+.entry-key {
+  font-family: 'Sora', sans-serif; font-size: 11px;
+  font-weight: 700; color: var(--chord); text-align: right;
+  padding-right: 24px;
+}
+.entry-key .key-val { display: block; font-size: 13px; margin-bottom: 3px; }
+.entry-key .capo-val { display: block; font-weight: 500; font-size: 10px; color: var(--muted); }
+
+/* Edit button in row — shows on hover */
+.entry-edit-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted-2); opacity: 0;
+  background: transparent;
+  transition: opacity 0.15s, color 0.12s, background 0.12s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.song-entry:hover .entry-edit-btn { opacity: 1; }
+.entry-edit-btn:hover { color: var(--ink); background: var(--line); }
+
+/* Recently played */
+.recent-label {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted-2);
+  padding: 16px 32px 8px; display: flex; align-items: center; gap: 12px;
+}
+.lib-footer-space { height: 100px; }
+
+/* Floating Add button */
+.fab-add {
+  position: fixed; bottom: 32px; right: 32px; z-index: 30;
+  background: var(--ink); color: var(--bg);
+  border-radius: 3px; height: 44px;
+  padding: 0 18px 0 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: background 0.15s, box-shadow 0.12s;
+}
+.fab-add:hover { background: var(--green); box-shadow: 0 6px 20px rgba(0,0,0,0.26); }
+.fab-add.hidden { display: none; }
+
+
+/* ===================================================
+   PLAYER
+   =================================================== */
+.player-nav {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 32px; gap: 16px;
+}
+.back-link {
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 6px; transition: color 0.12s;
+}
+.back-link:hover { color: var(--ink); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* Player identity — art left, title right */
+.player-identity {
+  padding: 20px 32px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+  background: var(--surface);
+}
+/* Album art block — LEFT side */
+.player-art-block {
+  flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.player-art-img {
+  width: 100px; height: 100px;
+  border-radius: 10px; overflow: hidden;
+  background: var(--line); flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+.player-art-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.player-art-img svg { width: 100%; height: 100%; display: block; }
+.player-key-wrap { text-align: right; flex-shrink: 0; }
+.player-key-display {
+  font-family: 'Cormorant', serif; font-size: 44px; font-weight: 500;
+  color: var(--chord); line-height: 1;
+}
+.player-key-label {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted-2); margin-top: 4px;
+}
+/* Title + artist — RIGHT side */
+.player-identity-left { min-width: 0; flex: 1; }
+.player-song-title {
+  font-family: 'Cormorant', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(36px, 5.5vw, 72px); line-height: 0.95;
+  letter-spacing: -1.5px; color: var(--ink);
+  word-break: break-word;
+}
+.player-song-artist {
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-top: 10px;
+}
+
+/* Controls strip */
+.controls-strip {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--line); overflow: hidden;
+  background: var(--bg);
+}
+.ctrl-btn {
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--muted);
+  padding: 12px 18px; border-right: 1px solid var(--line);
+  background: transparent; transition: color 0.12s, background 0.12s;
+  display: flex; align-items: center; gap: 7px; white-space: nowrap;
+}
+.ctrl-btn:hover { color: var(--ink); background: var(--green-soft); }
+.ctrl-btn:last-child { border-right: none; }
+.ctrl-btn .step { font-size: 16px; color: var(--muted-2); }
+.ctrl-key { font-family: 'Cormorant', serif; font-size: 18px; font-weight: 600; color: var(--ink); min-width: 30px; text-align: center; }
+.trans-hint {
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
+  color: var(--ochre); background: var(--ochre-soft); padding: 3px 10px; border-radius: 2px;
+}
+
+/* Info bar */
+.info-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 32px; border-bottom: 1px solid var(--line);
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted-2);
+  background: var(--bg);
+}
+
+/* Preview panel */
+.preview-section { border-bottom: 1px solid var(--line); background: var(--bg); }
+.preview-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 32px; border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.preview-hd-label {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted-2);
+}
+.preview-toggle-btn {
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--green); text-transform: uppercase;
+}
+.preview-body { padding: 16px 32px 20px; display: flex; gap: 0; align-items: flex-start; }
+.chords-col { flex: 1; }
+.chords-rail {
+  display: flex; gap: 20px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;
+}
+.chords-rail::-webkit-scrollbar { display: none; }
+.chord-item { flex-shrink: 0; text-align: center; }
+.chord-item-name {
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
+  color: var(--chord); margin-bottom: 6px; display: block;
+}
+.chord-diagram { width: 60px; }
+.strum-col {
+  flex-shrink: 0; border-left: 1px solid var(--line);
+  padding-left: 28px; margin-left: 28px; min-width: 300px;
+}
+.strum-bpm-label {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted-2); margin-bottom: 10px;
+}
+.strum-svg { width: 100%; height: 72px; }
+
+/* Artist's comments */
+.comments-section { border-bottom: 1px solid var(--line); background: var(--bg); }
+.comments-body {
+  padding: 16px 32px 22px;
+  font-family: 'Cormorant', serif; font-style: italic;
+  font-size: 22px; line-height: 1.7; color: var(--muted);
+}
+
+/* Lyrics */
+.lyric-body { padding: 0 32px 180px; }
+.sec-block {
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 30px 0 8px; border-bottom: 1px solid var(--line-strong); margin-bottom: 0;
+}
+.sec-name {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted-2); flex-shrink: 0;
+}
+.sec-note-text {
+  font-family: 'Cormorant', serif; font-style: italic; font-size: 15px; color: var(--muted);
+}
+.lyric-line {
+  font-family: 'Cormorant', Georgia, serif;
+  font-size: var(--lyric-size, 28px); line-height: 2.0;
+  color: var(--ink-2); white-space: pre; overflow-x: auto; scrollbar-width: none;
+}
+.lyric-line::-webkit-scrollbar { display: none; }
+.chord-token {
+  font-family: 'Sora', sans-serif;
+  font-size: calc(var(--lyric-size, 28px) * 0.52);
+  font-weight: 700; color: var(--chord); letter-spacing: 0.3px;
+  cursor: pointer;
+  background: var(--green-soft);
+  border: 1px solid var(--green-light);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin: 0 1px;
+  display: inline-block;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.chord-token:hover { background: var(--green-light); color: var(--green); border-color: var(--green); }
+[data-theme="dark"] .chord-token { background: var(--green-soft); border-color: var(--green-light); }
+
+/* Chord popover */
+.chord-pop {
+  position: absolute; background: var(--surface);
+  border: 1px solid var(--line-strong); border-top: 3px solid var(--chord);
+  border-radius: 0 0 4px 4px; padding: 14px 16px 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  z-index: 50; display: none; text-align: center; width: 128px;
+}
+.chord-pop.open { display: block; }
+.pop-chord-name {
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--chord); margin-bottom: 8px;
+}
+.pop-missing { font-family: 'Cormorant', serif; font-style: italic; font-size: 13px; color: var(--muted); padding: 10px 0; }
+
+/* Footer */
+.player-footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surface); border-top: 2px solid var(--ink);
+  display: flex; align-items: stretch; z-index: 10; overflow: hidden;
+  min-height: 56px;
+}
+/* Left slot: Speed — hidden until play starts */
+.foot-left {
+  flex: none;
+  display: flex; align-items: stretch;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+  max-width: 300px;
+  transition: max-width 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
+  opacity: 1;
+}
+.foot-left.hidden {
+  max-width: 0;
+  opacity: 0;
+  border-right-width: 0;
+  pointer-events: none;
+}
+/* Centre: Play — fills all remaining space */
+.foot-play {
+  flex: 1;
+  color: #fff; background: var(--chord);
+  transition: background 0.12s; display: flex; align-items: center; justify-content: center;
+  font-size: 0; /* icon only */
+}
+.foot-play:hover { background: var(--ink); }
+
+/* Floating text-size widget — bottom-right, above footer */
+.size-widget {
+  position: fixed; bottom: 72px; right: 20px; z-index: 20;
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 2px solid var(--ink); border-radius: 3px;
+  overflow: hidden;
+}
+.size-widget.hidden { display: none; }
+.size-widget-btn {
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.3px; color: var(--muted);
+  min-width: 44px; min-height: 44px;
+  padding: 0 16px;
+  background: transparent; transition: color 0.12s, background 0.12s;
+  display: flex; align-items: center; justify-content: center;
+}
+.size-widget-btn + .size-widget-btn { border-top: 1px solid var(--line); }
+.size-widget-btn:hover { color: var(--ink); background: var(--green-soft); }
+.foot-speed {
+  display: flex; align-items: center; gap: 10px; padding: 0 20px;
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted-2);
+}
+.foot-speed input[type=range] { width: 90px; accent-color: var(--green); cursor: pointer; }
+
+
+/* ===================================================
+   MODAL — shared for Add + Edit
+   =================================================== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(16,14,8,0.6);
+  backdrop-filter: blur(6px); display: none; align-items: center;
+  justify-content: center; z-index: 60; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: 4px;
+  width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+}
+.modal-head {
+  padding: 22px 26px 18px; border-bottom: 2px solid var(--ink);
+  display: flex; justify-content: space-between; align-items: baseline;
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+.modal-head h2 { font-family: 'Cormorant', serif; font-size: 30px; font-style: italic; font-weight: 400; }
+.modal-close {
+  font-size: 22px; line-height: 1; color: var(--muted-2);
+  transition: color 0.12s; padding: 2px 4px;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-body { padding: 24px 26px; }
+.modal-foot {
+  padding: 16px 26px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  position: sticky; bottom: 0; background: var(--surface);
+}
+.modal-foot-right { display: flex; gap: 10px; }
+
+/* Form fields */
+.field { margin-bottom: 20px; }
+.field label {
+  display: block; font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
+  letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted-2); margin-bottom: 8px;
+}
+.field input, .field textarea, .field select {
+  width: 100%; border: 0; border-bottom: 1.5px solid var(--line-strong);
+  background: transparent; font-family: 'Cormorant', serif; font-size: 20px;
+  color: var(--ink); padding: 8px 0; outline: none; transition: border-color 0.15s;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-bottom-color: var(--green); }
+.field textarea {
+  font-family: 'SF Mono', Menlo, monospace; font-size: 12px;
+  min-height: 150px; white-space: pre;
+  border: 1.5px solid var(--line-strong); padding: 10px; border-radius: 2px;
+}
+.field textarea:focus { border-color: var(--green); }
+.field .help {
+  font-family: 'Sora', sans-serif; font-size: 10px; font-style: italic;
+  color: var(--muted-2); margin-top: 5px;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.field select { background: var(--surface); }
+
+/* Album art upload area */
+.art-upload-area {
+  border: 1.5px dashed var(--line-strong); border-radius: 4px;
+  padding: 20px; text-align: center; cursor: pointer;
+  background: var(--bg); transition: border-color 0.15s, background 0.15s;
+  position: relative; overflow: hidden;
+}
+.art-upload-area:hover { border-color: var(--green); background: var(--green-soft); }
+.art-upload-area input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.art-upload-label {
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 8px;
+  pointer-events: none;
+}
+.art-upload-label .mi { font-size: 28px; color: var(--muted-2); }
+.art-preview-wrap {
+  display: none; position: relative; width: 100px; height: 100px; margin: 0 auto;
+}
+.art-preview-wrap img {
+  width: 100px; height: 100px; object-fit: cover; border-radius: 6px;
+  display: block;
+}
+.art-remove-btn {
+  position: absolute; top: -8px; right: -8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--danger); color: #fff;
+  font-size: 14px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 2; border: 2px solid var(--surface);
+}
+.art-remove-btn .mi { font-size: 12px; }
+
+/* ===================================================
+   SHARED
+   =================================================== */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: var(--bg);
+  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+  padding: 10px 20px; border-radius: 2px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 100;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+/* Confirm delete overlay */
+.confirm-overlay {
+  position: fixed; inset: 0; background: rgba(16,14,8,0.7);
+  backdrop-filter: blur(4px); display: none; align-items: center;
+  justify-content: center; z-index: 70; padding: 24px;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  background: var(--surface); border: 1px solid var(--line-strong);
+  border-top: 3px solid var(--danger); border-radius: 4px;
+  width: 100%; max-width: 380px; padding: 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+.confirm-box h3 {
+  font-family: 'Cormorant', serif; font-size: 24px; font-style: italic;
+  color: var(--ink); margin-bottom: 10px;
+}
+.confirm-box p { font-family: 'Sora', sans-serif; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.confirm-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+
+/* ===================================================
+   SPLASH  — stands alone, fades out after 3 s
+   =================================================== */
+.splash {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 500;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.4s ease;
+}
+.splash.out { opacity: 0; pointer-events: none; }
+
+/* Stage — centred, no collapse movement */
+.splash-stage {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 22px;
+}
+
+/* Text wrapper — cursor tracks the text */
+.splash-write { position: relative; display: inline-block; }
+
+/* Writing text — simple fade-in from left */
+.splash-text {
+  font-family: 'Playwrite NO', cursive;
+  font-size: clamp(48px, 10vw, 80px);
+  font-weight: 400; color: var(--sepia);
+  white-space: nowrap; line-height: 1;
+  opacity: 0; transform: translateX(-20px);
+  animation: splashFadeIn 1s ease 0.3s forwards;
+}
+@keyframes splashFadeIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Subtitle — fades in just after write finishes */
+.splash-sub {
+  font-family: 'Sora', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--muted); line-height: 1; opacity: 0;
+  animation: splashSubFade 0.6s ease 1.8s forwards;
+}
+@keyframes splashSubFade { to { opacity: 1; } }
+
+@media (max-width: 768px) {
+  .masthead { padding: 20px 16px 14px; }
+  .search-strip, .list-header, .song-entry, .recent-label { padding-left: 16px; padding-right: 16px; }
+  .list-header { grid-template-columns: 48px 1fr 90px 48px; }
+  .song-entry { grid-template-columns: 48px 1fr 90px 48px; }
+  .entry-edit-btn { display: none; }
+  .song-entry.featured { grid-template-columns: 72px 1fr; }
+  .player-nav, .info-bar, .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
+  .player-identity { padding: 20px 16px 16px; }
+  .player-art-img { width: 80px; height: 80px; }
+  .strum-col { display: none; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ===================================================
+     SPLASH
+     =================================================== -->
+<div id="splash" class="splash" role="presentation" aria-hidden="true">
+  <div class="splash-stage">
+    <div class="splash-write">
+      <div class="splash-text">Hey June!</div>
+    </div>
+    <div class="splash-sub">What are we playing today?</div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     LIBRARY
+     =================================================== -->
+<section id="library" class="screen active" aria-label="Song library">
+  <header class="masthead">
+    <div class="wordmark">
+      <span class="wordmark-title">Hey June!</span>
+      <span class="wordmark-sub">What are we playing today?</span>
+    </div>
+    <div class="masthead-right">
+      <button class="icon-round" id="themeBtn" aria-label="Toggle theme">
+        <span class="mi">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="search-strip" role="search">
+    <span class="mi" style="color:var(--muted-2); font-size:30px;">search</span>
+    <input id="searchInput" type="text" placeholder="Search a song or artist…" aria-label="Search songs">
+  </div>
+
+  <div id="recentSection" style="display:none;">
+    <div class="recent-label">Recently played</div>
+    <div id="recentContainer"></div>
+  </div>
+
+  <div class="list-header" aria-hidden="true">
+    <span class="hdr-title">Title</span>
+    <span class="hdr-key">Key</span>
+    <span class="hdr-edit"></span>
+  </div>
+
+  <div id="songContainer" role="list"></div>
+  <div id="emptyState" style="display:none; padding:60px 32px; font-family:'Cormorant',serif; font-style:italic; font-size:24px; color:var(--muted);">Nothing found.</div>
+  <div class="lib-footer-space"></div>
+</section>
+
+
+<!-- Floating Add Song button -->
+<button class="fab-add" id="addSongBtn" aria-label="Add a song">
+  <span class="mi" style="font-size:22px;">add</span>
+  <span>Add Song</span>
+</button>
+
+
+<!-- ===================================================
+     PLAYER
+     =================================================== -->
+<section id="player" class="screen" aria-label="Chord player">
+  <nav class="player-nav">
+    <button class="back-link" id="backBtn">← Library</button>
+    <div class="nav-right">
+      <button class="ctrl-btn" id="playerEditBtn" aria-label="Edit song" style="border:1px solid var(--line); border-radius:3px; font-size:14px;">
+        <span class="mi" style="font-size:18px;">edit</span> Edit
+      </button>
+      <button class="icon-round" id="playerThemeBtn" aria-label="Toggle theme">
+        <span class="mi">dark_mode</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Art (left) + Title (centre) + Key (right) -->
+  <div class="player-identity">
+    <div class="player-art-block">
+      <div class="player-art-img" id="playerArtImg"></div>
+    </div>
+    <div class="player-identity-left">
+      <div class="player-song-title" id="playerTitle">—</div>
+      <div class="player-song-artist" id="playerArtist">—</div>
+    </div>
+    <div class="player-key-wrap">
+      <div class="player-key-display" id="keyDisplay">G</div>
+      <div class="player-key-label">Key</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-strip" role="toolbar">
+    <button class="ctrl-btn" id="transDown"><span class="step">−</span> Transpose</button>
+    <div class="ctrl-btn" style="cursor:default; color:var(--ink);">
+      <span class="ctrl-key" id="ctrlKey">G</span>
+      <span id="transHint"></span>
+    </div>
+    <button class="ctrl-btn" id="transUp">Transpose <span class="step">+</span></button>
+    <div style="flex:1; border-right:1px solid var(--line);"></div>
+  </div>
+
+  <div id="infoBar" class="info-bar"></div>
+
+  <!-- Preview -->
+  <div class="preview-section" id="previewSection">
+    <div class="preview-header">
+      <span class="preview-hd-label">Chords in this song</span>
+      <button class="preview-toggle-btn" id="previewToggle">Hide</button>
+    </div>
+    <div class="preview-body" id="previewBody">
+      <div class="chords-col"><div class="chords-rail" id="chordsRail"></div></div>
+      <div class="strum-col">
+        <div class="strum-bpm-label">Strumming · <span id="bpmLabel">86 bpm</span></div>
+        <svg class="strum-svg" id="strumSvg" viewBox="0 0 420 72" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artist's comments (hidden when empty) -->
+  <div class="comments-section" id="commentsSection" style="display:none;">
+    <div class="preview-header">
+      <span class="preview-hd-label">Artist's comments</span>
+      <button class="preview-toggle-btn" id="commentsToggle">Hide</button>
+    </div>
+    <div class="comments-body" id="commentsBody"></div>
+  </div>
+
+  <div class="lyric-body" id="lyricArea" tabindex="0" aria-label="Lyrics and chords"></div>
+
+  <footer class="player-footer">
+    <!-- Left: Speed — revealed when playing -->
+    <div class="foot-left hidden" id="footLeft">
+      <div class="foot-speed">
+        <span>Speed</span>
+        <input type="range" id="speedRange" min="3" max="10" value="4" aria-label="Scroll speed">
+      </div>
+    </div>
+    <!-- Centre: Play — fills full width when speed hidden -->
+    <button class="foot-play" id="playBtn" aria-label="Play auto-scroll">
+      <span class="mi" style="font-size:36px;">play_arrow</span>
+    </button>
+  </footer>
+
+  <!-- Sticky text-size widget — bottom right, shown only on song screen -->
+  <div class="size-widget hidden" id="sizeWidget" aria-label="Text size">
+    <button class="size-widget-btn" id="fontUp">A+</button>
+    <button class="size-widget-btn" id="fontDown">A−</button>
+  </div>
+</section>
+
+<!-- Chord popover -->
+<div class="chord-pop" id="chordPop" role="tooltip">
+  <div class="pop-chord-name" id="popName">—</div>
+  <div id="popBody"></div>
+</div>
+
+
+<!-- ===================================================
+     ADD / EDIT SONG MODAL
+     =================================================== -->
+<div class="modal-overlay" id="songModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">Add a song</h2>
+      <button class="modal-close" id="closeModal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Album art -->
+      <div class="field">
+        <label>Album Art</label>
+        <div class="art-upload-area" id="artUploadArea">
+          <input type="file" id="artFileInput" accept="image/*" aria-label="Upload album art">
+          <div class="art-upload-label" id="artUploadLabel">
+            <span class="mi">add_photo_alternate</span>
+            <span>Tap to upload album art</span>
+            <span style="font-size:10px; color:var(--muted-2);">JPG, PNG, WEBP · recommended 1:1</span>
+          </div>
+          <div class="art-preview-wrap" id="artPreviewWrap">
+            <img id="artPreviewImg" src="" alt="Album art preview">
+            <button class="art-remove-btn" id="artRemoveBtn" type="button" aria-label="Remove image">
+              <span class="mi">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="pasteArea">Chords &amp; Lyrics</label>
+        <textarea id="pasteArea" placeholder="[Verse]&#10;    G           D&#10;Hello, it is me…"></textarea>
+        <div class="help">Chord lines are auto-detected. Use [Verse], [Chorus] etc. for sections.</div>
+      </div>
+      <div class="field">
+        <label for="commentsInput">Artist's comments</label>
+        <textarea id="commentsInput" style="min-height:90px;" placeholder="Tips, tricks, or notes on how to play this song…"></textarea>
+        <div class="help">Optional. Shown above the lyrics when playing.</div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label for="titleInput">Title</label><input id="titleInput" type="text" placeholder="Song title"></div>
+        <div class="field"><label for="artistInput">Artist</label><input id="artistInput" type="text" placeholder="Artist name"></div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label for="keyInput">Key</label><input id="keyInput" type="text" placeholder="G, Em, D…"></div>
+        <div class="field"><label for="capoInput">Capo</label>
+          <select id="capoInput">
+            <option value="0">No capo</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <div>
+        <!-- Delete button shown only in edit mode -->
+        <button class="ui-btn danger" id="deleteSongBtn" style="display:none; padding:8px 12px;">
+          <span class="mi" style="font-size:24px;">delete</span>
+        </button>
+      </div>
+      <div class="modal-foot-right">
+        <button class="ui-btn" id="cancelModal">Cancel</button>
+        <button class="ui-btn primary" id="saveModal">Save &amp; open</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm -->
+<div class="confirm-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true">
+  <div class="confirm-box">
+    <h3>Delete this song?</h3>
+    <p id="confirmMsg">This will permanently remove the song from your library.</p>
+    <div class="confirm-actions">
+      <button class="ui-btn" id="confirmCancel">Cancel</button>
+      <button class="ui-btn danger" id="confirmDelete">Yes, delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<!-- ===================================================
+     SCRIPT
+     =================================================== -->
+<script>
+/* ---- Preloaded songs ---- */
+const PRELOADED = [
+  { id:'yellow', title:'Yellow', artist:'Coldplay', key:'G', capo:4, difficulty:'Intermediate', bpm:86, albumArt:null,
+    body:`[Intro]
+G    G
+G    D    C    G
+
+[Verse 1]
+G
+ Look at the stars
+                      D
+Look how they shine for you
+                    Cmaj7
+And everything you do
+Yeah, they were all yellow
+G
+ I came along
+                 D
+I wrote a song for you
+                        Cmaj7
+And all the things you do
+And it was called "Yellow"
+G                  D
+ So then I took my turn
+                            Cmaj7
+Oh, what a thing to have done
+                     G  Gsus4
+And it was all yellow
+
+[Chorus 1]
+Cmaj7        Em7          D
+     Your skin, oh yeah, your skin and bones
+Cmaj7       Em7     D
+     Turn into something beautiful
+Cmaj7       Em7          D
+     You know, you know I love you so
+Cmaj7
+     You know I love you so
+
+[Verse 2]
+G
+ I swam across
+                  D
+I jumped across for you
+                     Cmaj7
+Oh, what a thing to do
+'Cause you were all yellow
+
+[Bridge]
+    G                             D
+It's true, look how they shine for you
+                       Cmaj7
+Look how they shine for you
+Look how they shine
+
+[Outro]
+G
+ Look at the stars
+                      Dm7
+Look how they shine for you
+                         Cmaj7
+And all the things that you do` },
+
+  { id:'creep', title:'Creep', artist:'Radiohead', key:'G', capo:0, difficulty:'Easy', bpm:92, albumArt:null,
+    body:`[Intro]
+G B C Cm
+
+[Verse 1]
+                    G                              B
+When you were here before, couldn't look you in the eyes
+                   C                         Cm
+You're just like an angel, your skin makes me cry
+                G                      B
+You float like a feather in a beautiful world
+            C                          Cm
+I wish I was special, you're so fucking special
+
+[Chorus] (play loud)
+         G            B
+But I'm a creep, I'm a weirdo
+                        C               Cm
+What the hell am I doing here? I don't belong here
+
+[Verse 2]
+                  G                      B
+I don't care if it hurts, I wanna have control
+                C                      Cm
+I want a perfect body, I want a perfect soul
+
+[Bridge]
+           G                     B
+Oooh, oooh, she's running out the door...
+C                      Cm
+She's running out, she run, run, run...
+
+[Chorus]
+         G            B
+But I'm a creep, I'm a weirdo
+                        C               Cm
+What the hell am I doing here? I don't belong here
+         G
+I don't belong here` },
+
+  { id:'highanddry', title:'High and Dry', artist:'Radiohead', key:'E', capo:0, difficulty:'Intermediate', bpm:84, albumArt:null,
+    body:`[Intro]
+B/F#    A     E     E
+
+[Verse]
+B/F#                           A                                E          E
+Two jumps in a week, I bet you think that's pretty clever, don't you boy.
+B/F#                       A                              E           E
+Flying on your motorcycle. Watching all the ground beneath you drop.
+
+[Chorus]
+              B/F#   A                 E     E
+Don't leave me high,    don't leave me dry,
+              B/F#   A                 E     E
+Don't leave me high,    don't leave me dry.
+
+[Verse]
+B/F#                      A                          E          E
+Drying up in conversation you will be the one who cannot talk.
+
+[Outro]
+              B/F#   A                 E
+Don't leave me high,    don't leave me dry.` },
+
+  { id:'myway', title:'My Way', artist:'Frank Sinatra', key:'D', capo:0, difficulty:'Intermediate', bpm:70, albumArt:null,
+    body:`[Intro]
+| D | Dmaj7 |
+
+[Verse 1]
+   D               Dmaj7
+And now, the end is near,
+        D7            B7
+And so I face the final curtain,
+   Em7                Em7/D
+My friend. I'll say it clear,
+            Em7/C#   A7       D
+I'll state my case of which I'm certain.
+           G             Gm
+I traveled each and every highway,
+   D                    A       Asus4   G    D
+And more, much more than this, I did it my way.
+
+[Verse 2]
+   D               Dmaj7
+Regrets, I've had a few,
+        D7                B7
+But then again, too few to mention.
+           G              Gm
+Each careful step along the byway,
+   D                    A     Asus4    G        D
+And more, much more than this, I did it my way.
+
+[Chorus]
+  Asus4    G       D
+And did it my way.` }
+];
+
+/* ---- Chord library ---- */
+const CHORDS = {
+  'G':    {frets:[3,2,0,0,0,3]}, 'C':{frets:[-1,3,2,0,1,0]}, 'D':{frets:[-1,-1,0,2,3,2]},
+  'A':    {frets:[-1,0,2,2,2,0]}, 'E':{frets:[0,2,2,1,0,0]}, 'Em':{frets:[0,2,2,0,0,0]},
+  'Am':   {frets:[-1,0,2,2,1,0]}, 'Dm':{frets:[-1,-1,0,2,3,1]},
+  'Cm':   {frets:[-1,3,5,5,4,3],barre:{fret:3,from:1,to:5}},
+  'B':    {frets:[-1,2,4,4,4,2],barre:{fret:2,from:1,to:5}},
+  'B/F#': {frets:[2,2,4,4,4,2],barre:{fret:2,from:0,to:5}},
+  'Bm':   {frets:[-1,2,4,4,3,2],barre:{fret:2,from:1,to:5}},
+  'Bm7':  {frets:[-1,2,0,2,0,2]}, 'B7':{frets:[-1,2,1,2,0,2]},
+  'Em7':  {frets:[0,2,0,0,0,0]}, 'Em7/D':{frets:[-1,-1,0,0,0,0]},
+  'Em7/C#':{frets:[-1,4,2,0,3,0]}, 'A7':{frets:[-1,0,2,0,2,0]},
+  'D7':   {frets:[-1,-1,0,2,1,2]}, 'Dmaj7':{frets:[-1,-1,0,2,2,2]},
+  'Cmaj7':{frets:[-1,3,2,0,0,0]}, 'Gsus4':{frets:[3,3,0,0,1,3]},
+  'Asus4':{frets:[-1,0,2,2,3,0]}, 'A7sus4':{frets:[-1,0,2,0,3,0]},
+  'F#m':  {frets:[2,4,4,2,2,2],barre:{fret:2,from:0,to:5}},
+  'Gm':   {frets:[3,5,5,3,3,3],barre:{fret:3,from:0,to:5}},
+  'Dm7':  {frets:[-1,-1,0,2,1,1]}
+};
+
+/* ---- State ---- */
+const SK = 'heyjune.v1';
+const state = {
+  songs:[], recent:[], current:null,
+  transposeSteps:0, fontSize:28, theme:'light',
+  scrollPlaying:false, scrollSpeed:4, scrollRaf:null, previewOpen:true,
+  modalMode:'add', editId:null,   // 'add' or 'edit'
+  pendingArt:null,                // base64 string for current modal session
+  pendingDeleteId:null
+};
+
+/* ---- Transposition ---- */
+const NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const FM={Db:'C#',Eb:'D#',Gb:'F#',Ab:'G#',Bb:'A#'};
+function nI(n){if(FM[n])n=FM[n];return NOTES.indexOf(n);}
+function tN(n,s){const i=nI(n);if(i<0)return n;return NOTES[((i+s)%12+12)%12];}
+const CRE=/^([A-G][#b]?)((?:m|maj|min|dim|aug|sus|add|M)?[0-9]*(?:sus[0-9]*)?(?:add[0-9]*)?)(?:\/([A-G][#b]?))?$/;
+function isCT(t){t=t.replace(/[()]/g,'');return t&&CRE.test(t);}
+function tC(c,s){const m=c.match(CRE);if(!m)return c;let o=tN(m[1],s)+(m[2]||'');if(m[3])o+='/'+tN(m[3],s);return o;}
+function isCL(l){const t=l.trim();if(!t)return false;const tk=t.split(/\s+/);return tk.filter(t=>isCT(t)).length>=Math.max(1,Math.floor(tk.length*.6));}
+function uChords(body){const s=new Set();body.split('\n').forEach(l=>{if(isCL(l))l.trim().split(/\s+/).forEach(t=>{const c=t.replace(/[()]/g,'');if(isCT(c))s.add(c);});});return[...s];}
+
+/* ---- Album art helpers ---- */
+function genArt(song){
+  let h=0;for(const c of song.id)h=(h*31+c.charCodeAt(0))>>>0;
+  const p=[['#6B9E7A','#C8DD9A'],['#A0C878','#DDE88A'],['#5B8A5E','#A2C46A'],
+           ['#C4A84A','#E8D580'],['#7BAA60','#B8D87A'],['#8AB55A','#CDE87A'],
+           ['#5E9E72','#A0CC80'],['#B09A3A','#D8C060']];
+  const [c1,c2]=p[h%p.length];
+  const init=song.title.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const ang=(h%150)+15;
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="ag${song.id}" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(${ang} 0.5 0.5)">
+      <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+    <rect width="100" height="100" fill="url(#ag${song.id})"/>
+    <circle cx="76" cy="24" r="11" fill="rgba(255,255,255,0.18)"/>
+    <circle cx="20" cy="80" r="6" fill="rgba(255,255,255,0.12)"/>
+    <text x="50" y="62" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="36" font-weight="800" fill="rgba(255,255,255,0.92)" letter-spacing="-1">${init}</text>
+  </svg>`;
+}
+
+/* Returns HTML for an art element — <img> if real art, SVG otherwise */
+function artHtml(song){
+  if(song.albumArt)
+    return `<img src="${song.albumArt}" alt="${esc(song.title)} album art">`;
+  return genArt(song);
+}
+
+/* ---- Chord diagram SVG ---- */
+function chordSvg(name,w=60,h=78){
+  const d=CHORDS[name];if(!d)return null;
+  const fr=d.frets.filter(f=>f>0);
+  const mx=fr.length?Math.max(...fr):0,mn=fr.length?Math.min(...fr):0;
+  const base=(mx>4)?mn:1,disp=4;
+  const pad=7,sc=6,gw=w-pad*2,gh=h-pad-20,ss=gw/(sc-1),fs=gh/disp,top=pad+12;
+  let s=`<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  if(base===1)s+=`<rect x="${pad}" y="${top-3}" width="${gw}" height="3" fill="var(--ink)"/>`;
+  else s+=`<text x="${pad-2}" y="${top+fs*.7}" text-anchor="end" font-size="7" fill="var(--muted)" font-family="sans-serif">${base}fr</text>`;
+  for(let i=1;i<=disp;i++)s+=`<line x1="${pad}" y1="${top+fs*i}" x2="${pad+gw}" y2="${top+fs*i}" stroke="var(--line-strong)" stroke-width=".7"/>`;
+  for(let i=0;i<sc;i++)s+=`<line x1="${pad+ss*i}" y1="${top}" x2="${pad+ss*i}" y2="${top+gh}" stroke="var(--line-strong)" stroke-width=".7"/>`;
+  if(d.barre){const b=d.barre,yf=b.fret-base+1;if(yf>=1&&yf<=disp){const x1=pad+ss*b.from,x2=pad+ss*b.to,y=top+fs*(yf-.5);s+=`<rect x="${x1-3}" y="${y-3.5}" width="${x2-x1+6}" height="7" rx="3.5" fill="var(--ink)"/>`;}}
+  d.frets.forEach((f,i)=>{const x=pad+ss*i;if(f===-1)s+=`<text x="${x}" y="${top-3}" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="sans-serif">×</text>`;else if(f===0)s+=`<circle cx="${x}" cy="${top-6}" r="3" fill="none" stroke="var(--ink)" stroke-width=".9"/>`;else{const yf=f-base+1;if(yf>=1&&yf<=disp)s+=`<circle cx="${x}" cy="${top+fs*(yf-.5)}" r="4.5" fill="var(--ink)"/>"`;}});
+  return s+'</svg>';
+}
+
+/* ---- Strumming SVG ---- */
+function strumSvg(){
+  const p=[{d:'D',l:'1',a:0},{d:'D',l:'&',a:0},{d:'D',l:'2',a:1},{d:'U',l:'&',a:0},{d:'D',l:'3',a:0},{d:'U',l:'&',a:0},{d:'D',l:'4',a:1},{d:'U',l:'&',a:0}];
+  const vw=420,gap=vw/(p.length+.5);let s='';
+  p.forEach((pt,i)=>{
+    const x=gap*(i+.75),y1=10,y2=36;
+    if(pt.a)s+=`<text x="${x}" y="${y1-2}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)" font-family="Sora,sans-serif">›</text>`;
+    if(pt.d==='D'){s+=`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="var(--ink)" stroke-width="1.6"/>`;s+=`<polygon points="${x-4},${y2-5} ${x+4},${y2-5} ${x},${y2+2}" fill="var(--ink)"/>"`;}
+    else{s+=`<line x1="${x}" y1="${y2}" x2="${x}" y2="${y1}" stroke="var(--ink)" stroke-width="1.6"/>`;s+=`<polygon points="${x-4},${y1+5} ${x+4},${y1+5} ${x},${y1-2}" fill="var(--ink)"/>"`;}
+    s+=`<text x="${x}" y="${y2+13}" text-anchor="middle" font-size="10" font-weight="600" fill="var(--ink-2)" font-family="Sora,sans-serif">${pt.l}</text>`;
+    if(i%2===0&&i<p.length-1){const x2=gap*((i+1)+.75);s+=`<path d="M ${x-2} ${y2+18} L ${x-2} ${y2+23} L ${x2+2} ${y2+23} L ${x2+2} ${y2+18}" stroke="var(--ink)" stroke-width="1" fill="none"/>`;}
+  });
+  return s;
+}
+
+/* ---- Escape ---- */
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ---- Render lyrics ---- */
+function renderBody(body,steps){
+  return body.split('\n').map(line=>{
+    const sec=line.match(/^\s*\[([^\]]+)\](.*)$/);
+    if(sec){let h=`<div class="sec-block"><span class="sec-name">${esc(sec[1])}</span>`;if(sec[2].trim())h+=`<span class="sec-note-text">${esc(sec[2].trim())}</span>`;return h+'</div>';}
+    if(isCL(line)){
+      let out='',i=0;
+      while(i<line.length){
+        if(/\s/.test(line[i])){out+=line[i];i++;continue;}
+        let j=i;while(j<line.length&&!/\s/.test(line[j]))j++;
+        const tok=line.slice(i,j),cl=tok.replace(/[()]/g,'');
+        if(isCT(cl)){const tr=tC(cl,steps);out+=`<span class="chord-token" data-chord="${esc(tr)}" tabindex="0" role="button">${esc(tr)}</span>`;}
+        else out+=esc(tok);
+        i=j;
+      }
+      return `<div class="lyric-line">${out}</div>`;
+    }
+    return `<div class="lyric-line">${esc(line)||'&nbsp;'}</div>`;
+  }).join('');
+}
+
+/* ---- Storage ---- */
+function load(){
+  try{const r=localStorage.getItem(SK);if(r){const o=JSON.parse(r);state.songs=o.songs||[];state.recent=o.recent||[];state.theme=o.theme||'light';}}catch(e){}
+  PRELOADED.forEach(p=>{if(!state.songs.find(s=>s.id===p.id))state.songs.push(p);});
+  document.body.setAttribute('data-theme',state.theme);updateThemeIcons();
+}
+function save(){try{localStorage.setItem(SK,JSON.stringify({songs:state.songs,recent:state.recent,theme:state.theme}));}catch(e){}}
+
+/* ---- Library render ---- */
+function renderLib(filter=''){
+  const f=filter.trim().toLowerCase();
+  const matches=state.songs.filter(s=>!f||(s.title+' '+s.artist+' '+s.body).toLowerCase().includes(f));
+  const recSongs=state.recent.map(id=>state.songs.find(s=>s.id===id)).filter(Boolean).slice(0,4);
+  const rs=document.getElementById('recentSection');
+  if(recSongs.length&&!f){rs.style.display='block';document.getElementById('recentContainer').innerHTML=recSongs.map((s,i)=>entryHtml(s,i+1,false)).join('');wireClicks(document.getElementById('recentContainer'));}
+  else rs.style.display='none';
+  const cont=document.getElementById('songContainer');
+  cont.innerHTML=matches.map((s,i)=>entryHtml(s,i+1,i===0&&!f)).join('');
+  wireClicks(cont);
+  document.getElementById('emptyState').style.display=matches.length===0?'block':'none';
+}
+function wireClicks(root){
+  root.querySelectorAll('[data-song-id]').forEach(el=>{
+    el.addEventListener('click',e=>{
+      // If edit button was clicked, don't open player
+      if(e.target.closest('.entry-edit-btn')) return;
+      openSong(el.dataset.songId);
+    });
+  });
+  root.querySelectorAll('.entry-edit-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();openEditModal(btn.dataset.editId);});
+  });
+}
+
+function entryHtml(s,num,featured=false){
+  const capo=s.capo>0?`Capo ${s.capo}`:'No capo';
+  return `<button class="song-entry${featured?' featured':''}" data-song-id="${s.id}" role="listitem">
+    <div class="entry-art">${artHtml(s)}</div>
+    <span class="entry-main">
+      <span class="entry-title">${esc(s.title)}</span>
+      <span class="entry-artist">${esc(s.artist)} · ${capo}</span>
+    </span>
+    <span class="entry-key">
+      <span class="key-val">${esc(s.key||'—')}</span>
+      <span class="capo-val">${capo}</span>
+    </span>
+    <button class="entry-edit-btn" data-edit-id="${s.id}" aria-label="Edit ${esc(s.title)}">
+      <span class="mi" style="font-size:16px;">edit</span>
+    </button>
+  </button>`;
+}
+
+/* ---- Player ---- */
+function openSong(id){
+  const s=state.songs.find(x=>x.id===id);if(!s)return;
+  state.current=s;state.transposeSteps=0;
+  state.recent=[id,...state.recent.filter(x=>x!==id)].slice(0,8);
+  save();
+  document.getElementById('library').classList.remove('active');
+  document.getElementById('player').classList.add('active');
+  document.getElementById('addSongBtn').classList.add('hidden');
+  document.getElementById('sizeWidget').classList.remove('hidden');
+  document.getElementById('playerTitle').textContent=s.title;
+  document.getElementById('playerArtist').textContent=s.artist.toUpperCase();
+  document.getElementById('bpmLabel').textContent=`${s.bpm||86} bpm`;
+  document.getElementById('strumSvg').innerHTML=strumSvg();
+  renderPlayer();window.scrollTo(0,0);
+  try{if('wakeLock' in navigator)navigator.wakeLock.request('screen');}catch(e){}
+}
+function renderPlayer(){
+  const s=state.current;if(!s)return;
+  document.documentElement.style.setProperty('--lyric-size',state.fontSize+'px');
+  document.getElementById('lyricArea').innerHTML=renderBody(s.body,state.transposeSteps);
+  const ck=tC(s.key||'C',state.transposeSteps);
+  document.getElementById('keyDisplay').textContent=ck;
+  document.getElementById('ctrlKey').textContent=ck;
+
+  // Album art in player
+  document.getElementById('playerArtImg').innerHTML=artHtml(s);
+
+  // Artist's comments
+  const commSec=document.getElementById('commentsSection');
+  const commBody=document.getElementById('commentsBody');
+  if(s.comments&&s.comments.trim()){
+    commBody.textContent=s.comments;
+    commSec.style.display='block';
+    document.getElementById('commentsToggle').textContent='Hide';
+    commBody.style.display='';
+  } else {
+    commSec.style.display='none';
+  }
+
+  // Transpose hint
+  const hint=document.getElementById('transHint');
+  if(state.transposeSteps!==0){
+    const sign=state.transposeSteps>0?'+':'';
+    const sc=(s.capo||0)-state.transposeSteps;
+    const advice=sc>=0&&sc<=11?(sc===0?' · Remove capo':`  · Try capo ${sc}`):'';
+    hint.innerHTML=`<span class="trans-hint">${sign}${state.transposeSteps}${advice}</span>`;
+  } else hint.innerHTML='';
+
+  // Info bar
+  const bar=document.getElementById('infoBar');
+  const capo=s.capo>0?`Capo ${s.capo}`:'No capo';
+  bar.innerHTML=`<span>${capo}</span><span style="color:var(--line-strong)">·</span><span>Original: ${esc(s.key)}</span>`;
+
+  // Chord rail
+  const chords=[...new Set(uChords(s.body).map(c=>tC(c,state.transposeSteps)))];
+  document.getElementById('chordsRail').innerHTML=chords.map(name=>{
+    const svg=chordSvg(name);
+    return `<div class="chord-item"><span class="chord-item-name">${esc(name)}</span><div class="chord-diagram">${svg||`<div style="height:60px;display:flex;align-items:center;font-size:10px;color:var(--muted)">—</div>`}</div></div>`;
+  }).join('');
+
+  // Wire chord taps
+  document.querySelectorAll('.chord-token').forEach(el=>{
+    el.addEventListener('click',e=>{e.stopPropagation();showPop(el);});
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPop(el);}});
+  });
+}
+function closePlayer(){stopScroll();document.getElementById('player').classList.remove('active');document.getElementById('library').classList.add('active');document.getElementById('addSongBtn').classList.remove('hidden');document.getElementById('sizeWidget').classList.add('hidden');state.current=null;renderLib(document.getElementById('searchInput').value);}
+
+/* ---- Chord pop ---- */
+function showPop(el){
+  const name=el.dataset.chord,pop=document.getElementById('chordPop'),svg=chordSvg(name,100,126);
+  document.getElementById('popName').textContent=name;
+  document.getElementById('popBody').innerHTML=svg?`<div style="width:100px;height:126px;margin:0 auto">${svg}</div>`:`<div class="pop-missing">Shape not yet in library</div>`;
+  pop.classList.add('open');
+  const r=el.getBoundingClientRect();
+  let left=r.left+r.width/2-64;left=Math.max(8,Math.min(window.innerWidth-138,left));
+  pop.style.left=left+'px';pop.style.top=(r.bottom+window.scrollY+6)+'px';
+}
+function hidePop(){document.getElementById('chordPop').classList.remove('open');}
+
+/* ---- Auto scroll ---- */
+function startScroll(){
+  state.scrollPlaying=true;
+  document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:24px;">pause</span>';
+  document.getElementById('footLeft').classList.remove('hidden');
+  let last=performance.now();
+  const step=now=>{if(!state.scrollPlaying)return;const dt=(now-last)/1000;last=now;window.scrollBy(0,state.scrollSpeed*10*dt);if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}state.scrollRaf=requestAnimationFrame(step);};
+  state.scrollRaf=requestAnimationFrame(step);
+}
+function stopScroll(){
+  state.scrollPlaying=false;if(state.scrollRaf)cancelAnimationFrame(state.scrollRaf);
+  document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:24px;">play_arrow</span>';
+  document.getElementById('footLeft').classList.add('hidden');
+}
+function toggleScroll(){state.scrollPlaying?stopScroll():startScroll();}
+
+/* ---- Theme ---- */
+function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';document.body.setAttribute('data-theme',state.theme);save();updateThemeIcons();}
+function updateThemeIcons(){
+  const icon=state.theme==='dark'?'light_mode':'dark_mode';
+  document.getElementById('themeBtn').innerHTML=`<span class="mi">${icon}</span>`;
+  document.getElementById('playerThemeBtn').innerHTML=`<span class="mi">${icon}</span>`;
+}
+
+/* ---- Modal: album art handling ---- */
+function resetArtUI(){
+  state.pendingArt=null;
+  document.getElementById('artPreviewWrap').style.display='none';
+  document.getElementById('artUploadLabel').style.display='flex';
+  document.getElementById('artPreviewImg').src='';
+  document.getElementById('artFileInput').value='';
+}
+function setArtPreview(dataUrl){
+  state.pendingArt=dataUrl;
+  document.getElementById('artPreviewImg').src=dataUrl;
+  document.getElementById('artPreviewWrap').style.display='block';
+  document.getElementById('artUploadLabel').style.display='none';
+}
+
+/* ---- Modal: open for Add ---- */
+function openAddModal(){
+  state.modalMode='add'; state.editId=null;
+  document.getElementById('modalTitle').textContent='Add a song';
+  document.getElementById('saveModal').textContent='Save & open';
+  document.getElementById('deleteSongBtn').style.display='none';
+  resetArtUI();
+  ['pasteArea','titleInput','artistInput','keyInput','commentsInput'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('capoInput').value='0';
+  document.getElementById('songModal').classList.add('open');
+  document.getElementById('pasteArea').focus();
+}
+
+/* ---- Modal: open for Edit ---- */
+function openEditModal(id){
+  const s=state.songs.find(x=>x.id===id);if(!s)return;
+  state.modalMode='edit'; state.editId=id;
+  document.getElementById('modalTitle').textContent='Edit song';
+  document.getElementById('saveModal').textContent='Save changes';
+  document.getElementById('deleteSongBtn').style.display='inline-flex';
+  resetArtUI();
+  if(s.albumArt) setArtPreview(s.albumArt);
+  document.getElementById('pasteArea').value=s.body||'';
+  document.getElementById('titleInput').value=s.title||'';
+  document.getElementById('artistInput').value=s.artist||'';
+  document.getElementById('keyInput').value=s.key||'';
+  document.getElementById('capoInput').value=String(s.capo||0);
+  document.getElementById('commentsInput').value=s.comments||'';
+  document.getElementById('songModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('songModal').classList.remove('open');}
+
+/* ---- Save (add or edit) ---- */
+function saveModal(){
+  const body=document.getElementById('pasteArea').value.trim();
+  if(!body){showToast('Paste a chord sheet first');return;}
+  const title=document.getElementById('titleInput').value.trim()||'Untitled';
+  const artist=document.getElementById('artistInput').value.trim()||'Unknown';
+  const key=document.getElementById('keyInput').value.trim()||'C';
+  const capo=parseInt(document.getElementById('capoInput').value)||0;
+  const comments=document.getElementById('commentsInput').value.trim();
+  const albumArt=state.pendingArt;
+
+  if(state.modalMode==='add'){
+    const id='user-'+Date.now();
+    state.songs.unshift({id,title,artist,key,capo,bpm:90,albumArt,comments,body});
+    save();closeModal();showToast('Song added');openSong(id);
+  } else {
+    const s=state.songs.find(x=>x.id===state.editId);
+    if(!s)return;
+    Object.assign(s,{title,artist,key,capo,comments,body});
+    // Only update art if user set a new one (pendingArt !== null means they interacted)
+    if(state.pendingArt!==undefined) s.albumArt=albumArt;
+    save();closeModal();showToast('Song updated');
+    // Refresh player if this song is currently open
+    if(state.current&&state.current.id===state.editId){
+      state.current=s;
+      document.getElementById('playerTitle').textContent=s.title;
+      document.getElementById('playerArtist').textContent=s.artist.toUpperCase();
+      renderPlayer();
+    } else {
+      renderLib(document.getElementById('searchInput').value);
+    }
+  }
+}
+
+/* ---- Delete flow ---- */
+function openDeleteConfirm(id){
+  const s=state.songs.find(x=>x.id===id);if(!s)return;
+  state.pendingDeleteId=id;
+  document.getElementById('confirmMsg').textContent=`"${s.title}" will be permanently removed from your library.`;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+function closeConfirm(){document.getElementById('confirmOverlay').classList.remove('open');state.pendingDeleteId=null;}
+function confirmDelete(){
+  const id=state.pendingDeleteId;if(!id)return;
+  state.songs=state.songs.filter(s=>s.id!==id);
+  state.recent=state.recent.filter(r=>r!==id);
+  save();closeConfirm();closeModal();
+  // If this song is open in player, go back
+  if(state.current&&state.current.id===id) closePlayer();
+  else renderLib(document.getElementById('searchInput').value);
+  showToast('Song deleted');
+}
+
+/* ---- Toast ---- */
+let tt;
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2400);}
+
+/* ---- Boot ---- */
+document.addEventListener('DOMContentLoaded',()=>{
+  load(); renderLib();
+
+
+  /* Splash — shows for 3 s, then fades out cleanly */
+  const splash = document.getElementById('splash');
+  let splashDone = false;
+  function dismissSplash(){
+    if (splashDone) return;
+    splashDone = true;
+    splash.classList.add('out');
+    setTimeout(() => { splash.style.display = 'none'; }, 400);
+  }
+  setTimeout(dismissSplash, 3000);
+  splash.addEventListener('click', dismissSplash);
+
+  /* Library */
+  document.getElementById('searchInput').addEventListener('input',e=>renderLib(e.target.value));
+  document.getElementById('addSongBtn').addEventListener('click',openAddModal);
+  document.getElementById('themeBtn').addEventListener('click',toggleTheme);
+
+  /* Modal */
+  document.getElementById('closeModal').addEventListener('click',closeModal);
+  document.getElementById('cancelModal').addEventListener('click',closeModal);
+  document.getElementById('saveModal').addEventListener('click',saveModal);
+  document.getElementById('songModal').addEventListener('click',e=>{if(e.target.id==='songModal')closeModal();});
+  document.getElementById('deleteSongBtn').addEventListener('click',()=>openDeleteConfirm(state.editId));
+
+  /* Art upload */
+  document.getElementById('artFileInput').addEventListener('change',e=>{
+    const file=e.target.files[0];if(!file)return;
+    if(!file.type.startsWith('image/')){showToast('Please choose an image file');return;}
+    const reader=new FileReader();
+    reader.onload=ev=>setArtPreview(ev.target.result);
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('artRemoveBtn').addEventListener('click',e=>{e.stopPropagation();resetArtUI();state.pendingArt=null;});
+
+  /* Delete confirm */
+  document.getElementById('confirmCancel').addEventListener('click',closeConfirm);
+  document.getElementById('confirmDelete').addEventListener('click',confirmDelete);
+  document.getElementById('confirmOverlay').addEventListener('click',e=>{if(e.target.id==='confirmOverlay')closeConfirm();});
+
+  /* Player */
+  document.getElementById('backBtn').addEventListener('click',closePlayer);
+  document.getElementById('playerThemeBtn').addEventListener('click',toggleTheme);
+  document.getElementById('playerEditBtn').addEventListener('click',()=>{if(state.current)openEditModal(state.current.id);});
+  document.getElementById('transUp').addEventListener('click',()=>{state.transposeSteps++;renderPlayer();});
+  document.getElementById('transDown').addEventListener('click',()=>{state.transposeSteps--;renderPlayer();});
+  document.getElementById('fontUp').addEventListener('click',()=>{state.fontSize=Math.min(38,state.fontSize+2);renderPlayer();});
+  document.getElementById('fontDown').addEventListener('click',()=>{state.fontSize=Math.max(16,state.fontSize-2);renderPlayer();});
+  document.getElementById('playBtn').addEventListener('click',toggleScroll);
+  document.getElementById('speedRange').addEventListener('input',e=>{state.scrollSpeed=parseInt(e.target.value);});
+  document.getElementById('previewToggle').addEventListener('click',()=>{
+    state.previewOpen=!state.previewOpen;
+    document.getElementById('previewBody').style.display=state.previewOpen?'':'none';
+    document.getElementById('previewToggle').textContent=state.previewOpen?'Hide':'Show';
+  });
+  document.getElementById('commentsToggle').addEventListener('click',()=>{
+    const body=document.getElementById('commentsBody');
+    const isOpen=body.style.display!=='none';
+    body.style.display=isOpen?'none':'';
+    document.getElementById('commentsToggle').textContent=isOpen?'Show':'Hide';
+  });
+  document.getElementById('lyricArea').addEventListener('click',e=>{if(e.target.closest('.chord-token'))return;hidePop();if(state.scrollPlaying)stopScroll();});
+  document.addEventListener('click',e=>{if(!e.target.closest('#chordPop')&&!e.target.closest('.chord-token'))hidePop();});
+  document.addEventListener('keydown',e=>{
+    if(!document.getElementById('player').classList.contains('active'))return;
+    if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+    if(e.key===' '){e.preventDefault();toggleScroll();}
+    if(e.key==='ArrowUp'){state.transposeSteps++;renderPlayer();}
+    if(e.key==='ArrowDown'){state.transposeSteps--;renderPlayer();}
+    if(e.key==='Escape'){hidePop();closePlayer();}
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'&&document.getElementById('player').classList.contains('active'))
+      try{navigator.wakeLock.request('screen');}catch(e){}
+  });
+});
+</script>
+</body>
+</html>
