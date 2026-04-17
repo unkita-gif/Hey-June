@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hey June</title>
-<link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Slackside+One&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -79,16 +78,16 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   border-bottom: 1px solid var(--line);
   display: flex; align-items: stretch;
   justify-content: space-between; gap: 16px;
-  background: var(--surface); min-height: 80px;
+  background: var(--surface); min-height: 52px;
 }
 .wordmark { display: flex; flex-direction: column; justify-content: center; gap: 6px; }
 .wordmark-title {
   font-family: 'Slackside One', cursive;
-  font-size: clamp(30px, 4vw, 52px);
+  font-size: clamp(26px, 3.6vw, 48px);
   font-weight: 400; font-style: normal;
   line-height: 1; letter-spacing: 0;
   color: var(--sepia);
-  transform: translateY(-3px);
+  transform: translateY(-5px);
 }
 .wordmark-sub {
   font-family: 'Sora', sans-serif;
@@ -168,6 +167,13 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   position: relative;
 }
 .song-entry:hover { background: var(--green-soft); }
+.song-entry.stagger-in {
+  opacity: 0; transform: translateY(16px);
+  animation: stackIn 0.35s ease forwards;
+}
+@keyframes stackIn {
+  to { opacity: 1; transform: translateY(0); }
+}
 .song-entry:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
 
 /* Thumbnail in rows */
@@ -446,40 +452,66 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--muted); min-width: 32px; text-align: center;
 }
 
-/* Footer — full-width play bar */
 /* ---- Sticky footer: full-width play bar ---- */
 .player-footer {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: var(--ink); z-index: 10; height: 80px;
+  transition: background 0.3s ease, transform 0.4s ease, opacity 0.4s ease;
+}
+.player-footer.playing {
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+.player-footer.hidden-bar {
+  transform: translateY(100%); opacity: 0; pointer-events: none;
 }
 .foot-play {
   width: 100%; height: 100%;
   color: var(--bg); background: transparent;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0; transition: background 0.12s; cursor: pointer;
+  font-size: 0; transition: color 0.3s ease, background 0.12s; cursor: pointer;
 }
+.player-footer.playing .foot-play { color: var(--ink); }
 .foot-play:hover { background: rgba(255,255,255,0.06); }
-/* Speed overlay — left-aligned inside the footer, visible only when scrolling */
-.foot-speed {
-  position: absolute; left: 0; top: 0; bottom: 0;
-  display: flex; align-items: center; gap: 10px;
-  padding: 0 20px;
-  max-width: 0; overflow: hidden; opacity: 0;
-  transition: max-width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-  pointer-events: none;
+.player-footer.playing .foot-play:hover { background: rgba(0,0,0,0.04); }
+
+/* ---- Nav slider panels (speed + size) ---- */
+.nav-slider-wrap {
+  position: relative; display: flex; align-items: stretch;
 }
-.foot-speed.visible {
-  max-width: 200px; opacity: 1; padding: 0 20px;
-  pointer-events: auto;
+.nav-slider-wrap .nav-right-btn {
+  position: relative; z-index: 22;
+  transition: color 0.12s, background 0.15s;
 }
-.foot-speed-label {
+.nav-slider-wrap.active .nav-right-btn {
+  background: var(--surface); color: var(--ink);
+}
+.nav-slider-panel {
+  position: absolute; top: 100%; left: 0; right: 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 0 18px;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
+  z-index: 21;
+}
+.nav-slider-panel.open {
+  max-height: 200px; opacity: 1; padding: 16px 0 18px;
+}
+.nav-slider-label {
   font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--bg);
-  opacity: 0.7; white-space: nowrap;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2);
+  margin-bottom: 12px;
 }
-.foot-speed-range {
-  width: 90px; height: 4px;
-  accent-color: var(--bg); cursor: pointer;
+.nav-slider-range {
+  writing-mode: vertical-lr; direction: rtl;
+  appearance: slider-vertical;
+  width: 20px; height: 120px;
+  accent-color: var(--chord); cursor: pointer;
 }
 
 
@@ -630,7 +662,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 /* Writing text — simple fade-in from left */
 .splash-text {
   font-family: 'Slackside One', cursive;
-  font-size: clamp(48px, 10vw, 80px);
+  font-size: clamp(60px, 12vw, 100px);
   font-weight: 400; color: var(--sepia);
   white-space: nowrap; line-height: 1;
   opacity: 0; transform: translateX(-20px);
@@ -658,7 +690,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .song-entry { grid-template-columns: 68px 1fr 70px; }
   .entry-art { width: 68px; height: 68px; }
   .entry-edit-btn { display: none; }
-  .player-nav, .preview-header, .preview-body, .lyric-body { padding-left: 20px; padding-right: 20px; }
+  .preview-header, .preview-body, .lyric-body { padding-left: 20px; padding-right: 20px; }
   .player-identity { padding: 20px 20px 16px; }
   .player-art-img { width: 80px; height: 80px; }
   .strum-col { display: none; }
@@ -681,7 +713,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .list-header { grid-template-columns: 1fr 60px; }
   .song-entry { grid-template-columns: 56px 1fr 60px; padding: 8px 16px; }
   .entry-art { width: 56px; height: 56px; }
-  .entry-title { font-size: 20px; }
+  .entry-title { font-size: 24px; }
   .entry-artist { font-size: 10px; }
   .entry-key .capo-val { font-size: 10px; }
   .entry-key { font-size: 14px; }
@@ -691,14 +723,14 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .fab-add .mi { font-size: 20px; }
 
   /* Player nav */
-  .player-nav { min-height: 44px; }
+  .player-nav { min-height: 52px; }
   .back-link { padding: 0 16px; font-size: 10px; }
-  .nav-right-btn { padding: 0 14px; font-size: 10px; }
-  .player-nav, .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
+  .nav-right-btn { padding: 0 12px; font-size: 10px; }
+  .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
 
   /* Player identity */
-  .player-identity { padding: 16px; gap: 16px; }
-  .player-art-img { display: none; }
+  .player-identity { padding: 16px; gap: 12px; }
+  .player-art-block { display: none; }
   .player-song-title { font-size: 28px; letter-spacing: 0; }
   .player-key-display { font-size: 32px; }
   .trans-btn { width: 32px; height: 32px; }
@@ -718,7 +750,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .comments-body { font-size: 18px; padding: 12px 16px 16px; }
 
   /* Splash */
-  .splash-text { font-size: 36px; }
+  .splash-text { font-size: 48px; }
 
   /* Modal */
   .modal-content { padding: 20px 16px 24px; }
@@ -760,10 +792,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
     <input id="searchInput" type="text" placeholder="What are we playing today?" aria-label="Search songs">
   </div>
 
-  <div class="list-header" aria-hidden="true">
-    <span class="hdr-title">Title</span>
-    <span class="hdr-key">Key</span>
-  </div>
+
 
   <div id="songContainer" role="list"></div>
   <div id="emptyState" style="display:none; padding:60px 32px; font-family:'EB Garamond',serif; font-size:24px; color:var(--muted);">Nothing found.</div>
@@ -785,10 +814,28 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   <nav class="player-nav">
     <button class="back-link" id="backBtn"><span class="mi" style="font-size:20px;vertical-align:middle;margin-right:4px;">arrow_back</span>Library</button>
     <div class="nav-right">
-      <button class="nav-right-btn" id="fontDown" aria-label="Decrease text size">A−</button>
-      <button class="nav-right-btn" id="fontUp" aria-label="Increase text size">A+</button>
+      <div class="nav-slider-wrap" id="speedWrap">
+        <button class="nav-right-btn" id="speedToggle" aria-label="Scroll speed">
+          <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">speed</span>
+        </button>
+        <div class="nav-slider-panel" id="speedPanel">
+          <span class="nav-slider-label">Speed</span>
+          <input type="range" id="speedRange" min="2" max="10" step="2" value="2"
+                 orient="vertical" aria-label="Scroll speed" class="nav-slider-range">
+        </div>
+      </div>
+      <div class="nav-slider-wrap" id="sizeWrap">
+        <button class="nav-right-btn" id="sizeToggle" aria-label="Text size">
+          <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">format_size</span>
+        </button>
+        <div class="nav-slider-panel" id="sizePanel">
+          <span class="nav-slider-label">Size</span>
+          <input type="range" id="sizeRange" min="16" max="38" step="2" value="28"
+                 orient="vertical" aria-label="Text size" class="nav-slider-range">
+        </div>
+      </div>
       <button class="nav-right-btn" id="playerEditBtn" aria-label="Edit song">
-        <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">edit</span> Edit
+        <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">edit</span>
       </button>
       <button class="nav-right-btn" id="playerThemeBtn" aria-label="Toggle theme">
         <span class="mi" style="text-transform:none; letter-spacing:0;">dark_mode</span>
@@ -847,11 +894,6 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
     <button class="foot-play" id="playBtn" aria-label="Play auto-scroll">
       <span class="mi" style="font-size:40px;">play_arrow</span>
     </button>
-    <div class="foot-speed" id="footSpeed">
-      <span class="foot-speed-label">Speed</span>
-      <input type="range" id="speedRange" min="1" max="10" value="2"
-             aria-label="Scroll speed" class="foot-speed-range">
-    </div>
   </footer>
 </section>
 
@@ -1262,12 +1304,19 @@ function load(){
 function save(){try{localStorage.setItem(SK,JSON.stringify({songs:state.songs,recent:state.recent,theme:state.theme}));}catch(e){}}
 
 /* ---- Library render ---- */
+let initialLoad=true;
 function renderLib(filter=''){
   const f=filter.trim().toLowerCase();
   const matches=state.songs.filter(s=>!f||(s.title+' '+s.artist+' '+s.body).toLowerCase().includes(f));
-  // Recently played section removed
   const cont=document.getElementById('songContainer');
   cont.innerHTML=matches.map((s,i)=>entryHtml(s,i+1,false)).join('');
+  if(initialLoad){
+    cont.querySelectorAll('.song-entry').forEach((el,i)=>{
+      el.classList.add('stagger-in');
+      el.style.animationDelay=`${i*0.08}s`;
+    });
+    initialLoad=false;
+  }
   wireClicks(cont);
   document.getElementById('emptyState').style.display=matches.length===0?'block':'none';
 }
@@ -1315,6 +1364,7 @@ function openSong(id){
   document.getElementById('playerArtist').textContent=s.artist.toUpperCase();
   document.getElementById('bpmLabel').textContent=`${s.bpm||86} bpm`;
   document.getElementById('strumSvg').innerHTML=strumSvg();
+  document.getElementById('sizeRange').value=state.fontSize;
   renderPlayer();window.scrollTo(0,0);
   try{if('wakeLock' in navigator)navigator.wakeLock.request('screen');}catch(e){}
 }
@@ -1412,18 +1462,35 @@ function popNav(dir){
 function hidePop(){document.getElementById('chordPop').classList.remove('open');}
 
 /* ---- Auto scroll ---- */
+let footerHideTimer=null;
+let footerHovered=false;
+function hideFooterBar(){
+  if(footerHovered)return;
+  document.querySelector('.player-footer').classList.add('hidden-bar');
+}
+function showFooterBar(){
+  document.querySelector('.player-footer').classList.remove('hidden-bar');
+  clearTimeout(footerHideTimer);
+  if(state.scrollPlaying && !footerHovered){
+    footerHideTimer=setTimeout(hideFooterBar,3000);
+  }
+}
 function startScroll(){
   state.scrollPlaying=true;
+  const footer=document.querySelector('.player-footer');
+  footer.classList.add('playing');
   document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">pause</span>';
-  document.getElementById('footSpeed').classList.add('visible');
+  footerHideTimer=setTimeout(hideFooterBar,3000);
   let last=performance.now();
-  const step=now=>{if(!state.scrollPlaying)return;const dt=(now-last)/1000;last=now;window.scrollBy(0,state.scrollSpeed*10*dt);if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}state.scrollRaf=requestAnimationFrame(step);};
+  const step=now=>{if(!state.scrollPlaying)return;const dt=(now-last)/1000;last=now;window.scrollBy(0,state.scrollSpeed*8*dt);if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}state.scrollRaf=requestAnimationFrame(step);};
   state.scrollRaf=requestAnimationFrame(step);
 }
 function stopScroll(){
   state.scrollPlaying=false;if(state.scrollRaf)cancelAnimationFrame(state.scrollRaf);
+  clearTimeout(footerHideTimer);
+  const footer=document.querySelector('.player-footer');
+  footer.classList.remove('playing','hidden-bar');
   document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">play_arrow</span>';
-  document.getElementById('footSpeed').classList.remove('visible');
 }
 function toggleScroll(){state.scrollPlaying?stopScroll():startScroll();}
 
@@ -1590,11 +1657,34 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('playerEditBtn').addEventListener('click',()=>{if(state.current)openEditModal(state.current.id);});
   document.getElementById('transUp').addEventListener('click',()=>{state.transposeSteps++;renderPlayer();});
   document.getElementById('transDown').addEventListener('click',()=>{state.transposeSteps--;renderPlayer();});
-  document.getElementById('fontUp').addEventListener('click',()=>{state.fontSize=Math.min(38,state.fontSize+2);renderPlayer();});
-  document.getElementById('fontDown').addEventListener('click',()=>{state.fontSize=Math.max(16,state.fontSize-2);renderPlayer();});
   document.getElementById('playBtn').addEventListener('click',toggleScroll);
   document.getElementById('speedRange').addEventListener('input',e=>{state.scrollSpeed=parseInt(e.target.value);});
-  document.getElementById('footSpeed').addEventListener('click',e=>{e.stopPropagation();});
+  document.getElementById('sizeRange').addEventListener('input',e=>{state.fontSize=parseInt(e.target.value);renderPlayer();});
+  const footerEl=document.querySelector('.player-footer');
+  footerEl.addEventListener('mouseenter',()=>{footerHovered=true;clearTimeout(footerHideTimer);});
+  footerEl.addEventListener('mouseleave',()=>{footerHovered=false;if(state.scrollPlaying){footerHideTimer=setTimeout(hideFooterBar,3000);}});
+  footerEl.addEventListener('touchstart',()=>{footerHovered=true;clearTimeout(footerHideTimer);},{passive:true});
+  footerEl.addEventListener('touchend',()=>{footerHovered=false;if(state.scrollPlaying){footerHideTimer=setTimeout(hideFooterBar,3000);}},{passive:true});
+
+  /* Nav slider panels — toggle open/close, close on outside click */
+  function closeAllPanels(){
+    document.querySelectorAll('.nav-slider-panel').forEach(p=>p.classList.remove('open'));
+    document.querySelectorAll('.nav-slider-wrap').forEach(w=>w.classList.remove('active'));
+  }
+  function togglePanel(btnId,panelId,wrapId){
+    document.getElementById(btnId).addEventListener('click',e=>{
+      e.stopPropagation();
+      const panel=document.getElementById(panelId);
+      const wrap=document.getElementById(wrapId);
+      const wasOpen=panel.classList.contains('open');
+      closeAllPanels();
+      if(!wasOpen){panel.classList.add('open');wrap.classList.add('active');}
+    });
+  }
+  togglePanel('speedToggle','speedPanel','speedWrap');
+  togglePanel('sizeToggle','sizePanel','sizeWrap');
+  document.querySelectorAll('.nav-slider-panel').forEach(p=>p.addEventListener('click',e=>e.stopPropagation()));
+  document.addEventListener('click',()=>closeAllPanels());
   document.getElementById('popPrev').addEventListener('click',e=>{e.stopPropagation();popNav(-1);});
   document.getElementById('popNext').addEventListener('click',e=>{e.stopPropagation();popNav(1);});
   document.getElementById('previewToggle').addEventListener('click',()=>{
@@ -1608,7 +1698,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     body.style.display=isOpen?'none':'';
     document.getElementById('commentsToggle').textContent=isOpen?'Show':'Hide';
   });
-  document.getElementById('lyricArea').addEventListener('click',e=>{if(e.target.closest('.chord-token'))return;hidePop();toggleScroll();});
+  document.getElementById('lyricArea').addEventListener('click',e=>{
+    if(e.target.closest('.chord-token'))return;
+    hidePop();
+    if(state.scrollPlaying && document.querySelector('.player-footer').classList.contains('hidden-bar')){
+      showFooterBar();
+    } else {
+      toggleScroll();
+    }
+  });
   document.addEventListener('click',e=>{if(!e.target.closest('#chordPop')&&!e.target.closest('.chord-token'))hidePop();});
   document.addEventListener('keydown',e=>{
     if(!document.getElementById('player').classList.contains('active'))return;
