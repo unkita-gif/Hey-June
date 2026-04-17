@@ -13,8 +13,8 @@
    HEY JUNE — typographic, editorial, brutalist-soft
    ===================================================== */
 :root {
-  --bg:          #faf9ec;
-  --surface:     #f3f1d1;
+  --bg:          #F4F0E4;
+  --surface:     #FAF7EE;
   --chrome:      #E6E0CC;
   --ink:         #1A1810;
   --ink-2:       #38352A;
@@ -35,8 +35,8 @@
   --danger-soft: #F5E4E4;
 }
 [data-theme="dark"] {
-  --bg:          #2e2710;
-  --surface:     #534822;
+  --bg:          #111410;
+  --surface:     #191C16;
   --chrome:      #0C0F0A;
   --ink:         #EDE8D4;
   --ink-2:       #C8C4AE;
@@ -75,14 +75,14 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
    =================================================== */
 .masthead {
   padding: 0; padding-left: 32px;
-  border-bottom: 0px solid var(--ink);
+  border-bottom: 1px solid var(--line);
   display: flex; align-items: stretch;
   justify-content: space-between; gap: 16px;
-  background: var(--bg);
+  background: var(--surface);
 }
-.wordmark { display: flex; flex-direction: column; gap: 10px; padding: 24px 0 18px; }
+.wordmark { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 20px 0; }
 .wordmark-title {
-  font-family: 'Slackside One';
+  font-family: 'Slackside One', cursive;
   font-size: clamp(30px, 4vw, 52px);
   font-weight: 400; font-style: normal;
   line-height: 1; letter-spacing: 0;
@@ -126,16 +126,18 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   background: var(--surface);
 }
 .search-strip input {
-  flex: 1; border: 0; background: transparent;
-  font-family: 'Gambarino', serif; font-size: 24px; font-style: regular;
-  color: var(--ink); padding: 18px 0; outline: none;
+  flex: 1; border: 0;
+  background: transparent;
+  font-family: 'Gambarino', serif; font-size: clamp(26px, 3.2vw, 38px); font-style: normal;
+  color: var(--ink); padding: 14px 0; margin: 10px 0;
+  outline: none;
 }
 .search-strip input::placeholder { color: var(--muted-2); }
 
 /* Column headers */
 .list-header {
   display: grid;
-  grid-template-columns: 56px 1fr 80px 56px;
+  grid-template-columns: 56px 1fr 80px;
   padding: 0 32px;
   border-bottom: 1px solid var(--line);
   background: var(--bg);
@@ -148,16 +150,15 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 /* "Title" spans art + title columns so it aligns with album art left edge */
 .list-header .hdr-title { grid-column: 1 / 3; }
 .list-header .hdr-key   { text-align: right; grid-column: 3; padding-right: 8px; }
-.list-header .hdr-edit  { grid-column: 4; }
 
 /* Song rows */
 .song-list { display: flex; flex-direction: column; }
 
 .song-entry {
   display: grid;
-  grid-template-columns: 56px 1fr 80px 56px;
+  grid-template-columns: 56px 1fr 80px;
   align-items: center;
-  padding: 10px 10px;
+  padding: 10px 32px;
   border-bottom: 1px solid var(--line);
   cursor: pointer; width: 100%; text-align: left;
   color: var(--ink); background: transparent;
@@ -180,7 +181,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .entry-main { padding: 0; min-width: 0; }
 .entry-title {
   font-family: 'Gambarino', Georgia, serif; font-weight: 500;
-  line-height: 1; color: var(--ink); display: block;
+  line-height: 1.2; color: var(--ink); display: block;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .entry-title { font-size: clamp(26px, 3.2vw, 38px); }
@@ -194,18 +195,17 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-weight: 700; color: var(--chord); text-align: right;
   padding-right: 8px;
 }
-.entry-key .key-val { display: block; font-size: 14px; margin-bottom: 3px; }
+.entry-key .key-val { display: block; font-size: 13px; margin-bottom: 3px; }
 .entry-key .capo-val { display: block; font-weight: 500; font-size: 10px; color: var(--muted); }
 
 /* Edit button in row — shows on hover */
 .entry-edit-btn {
+  position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
   width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   color: var(--muted-2); opacity: 0;
   background: transparent;
   transition: opacity 0.15s, color 0.12s, background 0.12s;
-  margin-left: auto;
-  flex-shrink: 0;
 }
 .song-entry:hover .entry-edit-btn { opacity: 1; }
 .entry-edit-btn:hover { color: var(--ink); background: var(--line); }
@@ -304,7 +304,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .trans-btn:hover { color: var(--ink); background: var(--green-soft); border-color: var(--ink); }
 .player-key-display {
   font-family: 'Gambarino', serif; font-size: 44px; font-weight: 500;
-  color: var(--chord); line-height: 1.3; min-width: 40px; text-align: center;
+  color: var(--chord); line-height: 1; min-width: 40px; text-align: center;
 }
 .player-capo-label {
   font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
@@ -318,7 +318,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 /* Title + artist */
 .player-identity-left { min-width: 0; flex: 1; }
 .player-song-title {
-  font-family: 'Gambarino', serif; font-style: italic; font-weight: 400;
+  font-family: 'Gambarino', serif; font-weight: 400;
   font-size: clamp(36px, 5.5vw, 72px); line-height: 0.95;
   letter-spacing: -1.5px; color: var(--ink);
   word-break: break-word;
@@ -369,7 +369,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .comments-section { border-bottom: 1px solid var(--line); background: var(--bg); }
 .comments-body {
   padding: 16px 32px 22px;
-  font-family: 'Gambarino', serif; font-style: italic;
+  font-family: 'Gambarino', serif;
   font-size: 22px; line-height: 1.7; color: var(--muted);
 }
 
@@ -384,14 +384,13 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   letter-spacing: 2px; text-transform: uppercase; color: var(--muted-2); flex-shrink: 0;
 }
 .sec-note-text {
-  font-family: 'Gambarino', serif; font-style: italic; font-size: 15px; color: var(--muted);
+  font-family: 'Gambarino', serif; font-size: 15px; color: var(--muted);
 }
 .lyric-line {
   font-family: 'Gambarino', Georgia, serif;
   font-size: var(--lyric-size, 28px); line-height: 2.0;
-  color: var(--ink-2); white-space: pre; overflow-x: auto; scrollbar-width: none;
+  color: var(--ink-2); white-space: pre-wrap; word-wrap: break-word;
 }
-.lyric-line::-webkit-scrollbar { display: none; }
 .chord-token {
   font-family: 'Sora', sans-serif;
   font-size: calc(var(--lyric-size, 28px) * 0.52);
@@ -405,7 +404,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   display: inline-block;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-.chord-token:hover { background: var(--green-light); color: var(--green); border-color: var(--green); }
+.chord-token:hover { background: #DDE9D8; border-color: var(--green-light); }
 [data-theme="dark"] .chord-token { background: var(--green-soft); border-color: var(--green-light); }
 
 /* Chord popover */
@@ -421,61 +420,63 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
   color: var(--chord); margin-bottom: 8px;
 }
-.pop-missing { font-family: 'Gambarino', serif; font-style: italic; font-size: 13px; color: var(--muted); padding: 10px 0; }
+.pop-missing { font-family: 'Gambarino', serif; font-size: 13px; color: var(--muted); padding: 10px 0; }
+.pop-voicing-label {
+  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 600;
+  letter-spacing: 0.5px; color: var(--muted); margin-top: 4px;
+}
+.pop-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.pop-nav.hidden { display: none; }
+.pop-nav-btn {
+  width: 28px; height: 28px; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--muted);
+  transition: color 0.12s, background 0.12s; cursor: pointer;
+}
+.pop-nav-btn:hover { color: var(--ink); background: var(--green-soft); }
+.pop-nav-label {
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 600;
+  color: var(--muted); min-width: 32px; text-align: center;
+}
 
 /* Footer — full-width play bar */
+/* ---- Sticky footer: full-width play bar ---- */
 .player-footer {
   position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--chord); border-top: none;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 10; height: 80px;
+  background: var(--ink); z-index: 10; height: 80px;
 }
 .foot-play {
   width: 100%; height: 100%;
-  color: #fff; background: transparent;
+  color: var(--bg); background: transparent;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0; /* icon only */
-  transition: background 0.12s;
+  font-size: 0; transition: background 0.12s; cursor: pointer;
 }
-.foot-play:hover { background: rgba(0,0,0,0.1); }
-
-/* Floating side widget — bottom-right, above footer */
-.side-widget {
-  position: fixed; bottom: 96px; right: 20px; z-index: 20;
-  display: flex; flex-direction: column; align-items: stretch;
-  background: var(--surface);
-  border: 2px solid var(--ink); border-radius: 3px;
-  overflow: hidden;
+.foot-play:hover { background: rgba(255,255,255,0.06); }
+/* Speed overlay — left-aligned inside the footer, visible only when scrolling */
+.foot-speed {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px;
+  max-width: 0; overflow: hidden; opacity: 0;
+  transition: max-width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  pointer-events: none;
 }
-.side-widget.hidden { display: none; }
-.side-widget-btn {
-  font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700;
-  letter-spacing: 0.3px; color: var(--muted);
-  width: 60px; height: 60px;
-  background: transparent; transition: color 0.12s, background 0.12s;
-  display: flex; align-items: center; justify-content: center;
+.foot-speed.visible {
+  max-width: 200px; opacity: 1; padding: 0 20px;
+  pointer-events: auto;
 }
-.side-widget-btn + .side-widget-btn { border-top: 1px solid var(--line); }
-.side-widget-btn:hover { color: var(--ink); background: var(--green-soft); }
-
-/* Speed float — vertical slider above A+/A− */
-.speed-float {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 14px 0 10px;
-  border-bottom: 1px solid var(--line);
-}
-.speed-float.hidden { display: none; }
-.speed-float-label {
+.foot-speed-label {
   font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2);
-  margin-bottom: 10px;
+  letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,0.5);
+  white-space: nowrap;
 }
-.speed-vertical {
-  writing-mode: vertical-lr;
-  direction: rtl;
-  appearance: slider-vertical;
-  width: 20px; height: 100px;
-  accent-color: var(--chord); cursor: pointer;
+.foot-speed-range {
+  width: 90px; height: 4px;
+  accent-color: var(--bg); cursor: pointer;
 }
 
 
@@ -498,7 +499,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   display: flex; justify-content: space-between; align-items: baseline;
   position: sticky; top: 0; background: var(--surface); z-index: 1;
 }
-.modal-head h2 { font-family: 'Gambarino', serif; font-size: 30px; font-style: italic; font-weight: 400; }
+.modal-head h2 { font-family: 'Gambarino', serif; font-size: 30px; font-weight: 400; }
 .modal-close {
   font-size: 22px; line-height: 1; color: var(--muted-2);
   transition: color 0.12s; padding: 2px 4px;
@@ -596,7 +597,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   box-shadow: 0 24px 60px rgba(0,0,0,0.3);
 }
 .confirm-box h3 {
-  font-family: 'Gambarino', serif; font-size: 24px; font-style: italic;
+  font-family: 'Gambarino', serif; font-size: 24px;
   color: var(--ink); margin-bottom: 10px;
 }
 .confirm-box p { font-family: 'Sora', sans-serif; font-size: 13px; color: var(--muted); line-height: 1.6; }
@@ -625,7 +626,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 
 /* Writing text — simple fade-in from left */
 .splash-text {
-  font-family: 'Playwrite NO', cursive;
+  font-family: 'Slackside One', cursive;
   font-size: clamp(48px, 10vw, 80px);
   font-weight: 400; color: var(--sepia);
   white-space: nowrap; line-height: 1;
@@ -646,16 +647,78 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 @keyframes splashSubFade { to { opacity: 1; } }
 
+/* ---- Tablet (≤768px) ---- */
 @media (max-width: 768px) {
-  .masthead { padding: 20px 16px 14px; }
-  .search-strip, .list-header, .song-entry, .recent-label { padding-left: 16px; padding-right: 16px; }
-  .list-header { grid-template-columns: 48px 1fr 70px 48px; }
-  .song-entry { grid-template-columns: 48px 1fr 70px 48px; }
+  .masthead { padding-left: 20px; }
+  .search-strip, .list-header, .song-entry, .recent-label { padding-left: 20px; padding-right: 20px; }
+  .list-header { grid-template-columns: 48px 1fr 70px; }
+  .song-entry { grid-template-columns: 48px 1fr 70px; }
   .entry-edit-btn { display: none; }
-  .player-nav, .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
-  .player-identity { padding: 20px 16px 16px; }
+  .player-nav, .preview-header, .preview-body, .lyric-body { padding-left: 20px; padding-right: 20px; }
+  .player-identity { padding: 20px 20px 16px; }
   .player-art-img { width: 80px; height: 80px; }
   .strum-col { display: none; }
+}
+
+/* ---- Mobile (≤600px) ---- */
+@media (max-width: 600px) {
+  /* Masthead */
+  .masthead { padding-left: 16px; }
+  .wordmark { gap: 6px; padding: 14px 0; }
+  .wordmark-title { font-size: 26px; }
+  .wordmark-sub { display: none; }
+
+  /* Search */
+  .search-strip { padding: 0 16px; }
+  .search-strip input { font-size: 20px; padding: 10px 0; margin: 6px 0; }
+
+  /* Browse list */
+  .list-header, .song-entry, .recent-label { padding-left: 16px; padding-right: 16px; }
+  .list-header { grid-template-columns: 44px 1fr 60px; }
+  .song-entry { grid-template-columns: 44px 1fr 60px; padding: 8px 16px; }
+  .song-art { width: 44px; height: 44px; }
+  .entry-title { font-size: 20px; }
+  .entry-artist { font-size: 10px; }
+  .entry-key { font-size: 14px; }
+  .entry-capo { font-size: 8px; }
+
+  /* FAB */
+  .fab-add { bottom: 20px; right: 16px; height: 52px; padding: 0 20px 0 16px; }
+  .fab-add .mi { font-size: 20px; }
+
+  /* Player nav */
+  .player-nav { min-height: 44px; }
+  .back-link { padding: 0 16px; font-size: 10px; }
+  .nav-right-btn { padding: 0 14px; font-size: 10px; }
+  .player-nav, .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
+
+  /* Player identity */
+  .player-identity { padding: 16px; gap: 16px; }
+  .player-art-img { width: 56px; height: 56px; }
+  .player-song-title { font-size: 28px; letter-spacing: -0.5px; }
+  .player-key-display { font-size: 32px; }
+  .trans-btn { width: 32px; height: 32px; }
+
+  /* Chord preview */
+  .chord-diagram { width: 50px; }
+  .chords-rail { gap: 14px; }
+
+  /* Lyrics */
+  .lyric-line { line-height: 1.7; }
+  .lyric-body { padding-bottom: 140px; }
+
+  /* Footer play bar */
+  .player-footer { height: 64px; }
+
+  /* Comments */
+  .comments-body { font-size: 18px; padding: 12px 16px 16px; }
+
+  /* Splash */
+  .splash-text { font-size: 36px; }
+
+  /* Modal */
+  .modal-content { padding: 20px 16px 24px; }
+  .modal-head h2 { font-size: 24px; }
 }
 </style>
 </head>
@@ -701,11 +764,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   <div class="list-header" aria-hidden="true">
     <span class="hdr-title">Title</span>
     <span class="hdr-key">Key</span>
-    <span class="hdr-edit"></span>
   </div>
 
   <div id="songContainer" role="list"></div>
-  <div id="emptyState" style="display:none; padding:60px 32px; font-family:'Gambarino',serif; font-style:italic; font-size:24px; color:var(--muted);">Nothing found.</div>
+  <div id="emptyState" style="display:none; padding:60px 32px; font-family:'Gambarino',serif; font-size:24px; color:var(--muted);">Nothing found.</div>
   <div class="lib-footer-space"></div>
 </section>
 
@@ -722,8 +784,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
      =================================================== -->
 <section id="player" class="screen" aria-label="Chord player">
   <nav class="player-nav">
-    <button class="back-link" id="backBtn">← Library</button>
+    <button class="back-link" id="backBtn"><span class="mi" style="font-size:20px;vertical-align:middle;margin-right:4px;">arrow_back</span>Library</button>
     <div class="nav-right">
+      <button class="nav-right-btn" id="fontDown" aria-label="Decrease text size">A−</button>
+      <button class="nav-right-btn" id="fontUp" aria-label="Increase text size">A+</button>
       <button class="nav-right-btn" id="playerEditBtn" aria-label="Edit song">
         <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">edit</span> Edit
       </button>
@@ -784,25 +848,23 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
     <button class="foot-play" id="playBtn" aria-label="Play auto-scroll">
       <span class="mi" style="font-size:40px;">play_arrow</span>
     </button>
-  </footer>
-
-  <!-- Floating controls — speed (only when playing) + A+/A− -->
-  <div class="side-widget hidden" id="sizeWidget">
-    <div class="speed-float hidden" id="speedFloat">
-      <span class="speed-float-label">Speed</span>
+    <div class="foot-speed" id="footSpeed">
+      <span class="foot-speed-label">Speed</span>
       <input type="range" id="speedRange" min="3" max="10" value="4"
-             orient="vertical" aria-label="Scroll speed"
-             class="speed-vertical">
+             aria-label="Scroll speed" class="foot-speed-range">
     </div>
-    <button class="side-widget-btn" id="fontUp">A+</button>
-    <button class="side-widget-btn" id="fontDown">A−</button>
-  </div>
+  </footer>
 </section>
 
 <!-- Chord popover -->
 <div class="chord-pop" id="chordPop" role="tooltip">
   <div class="pop-chord-name" id="popName">—</div>
   <div id="popBody"></div>
+  <div class="pop-nav hidden" id="popNav">
+    <button class="pop-nav-btn" id="popPrev" aria-label="Previous voicing"><span class="mi" style="font-size:18px;">chevron_left</span></button>
+    <span class="pop-nav-label" id="popNavLabel">1 / 1</span>
+    <button class="pop-nav-btn" id="popNext" aria-label="Next voicing"><span class="mi" style="font-size:18px;">chevron_right</span></button>
+  </div>
 </div>
 
 
@@ -1057,22 +1119,34 @@ And did it my way.` }
 
 /* ---- Chord library ---- */
 const CHORDS = {
-  'G':    {frets:[3,2,0,0,0,3]}, 'C':{frets:[-1,3,2,0,1,0]}, 'D':{frets:[-1,-1,0,2,3,2]},
-  'A':    {frets:[-1,0,2,2,2,0]}, 'E':{frets:[0,2,2,1,0,0]}, 'Em':{frets:[0,2,2,0,0,0]},
-  'Am':   {frets:[-1,0,2,2,1,0]}, 'Dm':{frets:[-1,-1,0,2,3,1]},
-  'Cm':   {frets:[-1,3,5,5,4,3],barre:{fret:3,from:1,to:5}},
-  'B':    {frets:[-1,2,4,4,4,2],barre:{fret:2,from:1,to:5}},
-  'B/F#': {frets:[2,2,4,4,4,2],barre:{fret:2,from:0,to:5}},
-  'Bm':   {frets:[-1,2,4,4,3,2],barre:{fret:2,from:1,to:5}},
-  'Bm7':  {frets:[-1,2,0,2,0,2]}, 'B7':{frets:[-1,2,1,2,0,2]},
-  'Em7':  {frets:[0,2,0,0,0,0]}, 'Em7/D':{frets:[-1,-1,0,0,0,0]},
-  'Em7/C#':{frets:[-1,4,2,0,3,0]}, 'A7':{frets:[-1,0,2,0,2,0]},
-  'D7':   {frets:[-1,-1,0,2,1,2]}, 'Dmaj7':{frets:[-1,-1,0,2,2,2]},
-  'Cmaj7':{frets:[-1,3,2,0,0,0]}, 'Gsus4':{frets:[3,3,0,0,1,3]},
-  'Asus4':{frets:[-1,0,2,2,3,0]}, 'A7sus4':{frets:[-1,0,2,0,3,0]},
-  'F#m':  {frets:[2,4,4,2,2,2],barre:{fret:2,from:0,to:5}},
-  'Gm':   {frets:[3,5,5,3,3,3],barre:{fret:3,from:0,to:5}},
-  'Dm7':  {frets:[-1,-1,0,2,1,1]}
+  'G':    [{frets:[3,2,0,0,0,3],label:'Open'},{frets:[3,5,5,4,3,3],barre:{fret:3,from:0,to:5},label:'Barre (3fr)'},{frets:[-1,-1,5,4,3,3],label:'Partial (3fr)'}],
+  'C':    [{frets:[-1,3,2,0,1,0],label:'Open'},{frets:[-1,3,5,5,5,3],barre:{fret:3,from:1,to:5},label:'Barre (3fr)'},{frets:[8,10,10,9,8,8],barre:{fret:8,from:0,to:5},label:'Barre (8fr)'}],
+  'D':    [{frets:[-1,-1,0,2,3,2],label:'Open'},{frets:[-1,5,7,7,7,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'},{frets:[10,12,12,11,10,10],barre:{fret:10,from:0,to:5},label:'Barre (10fr)'}],
+  'A':    [{frets:[-1,0,2,2,2,0],label:'Open'},{frets:[5,7,7,6,5,5],barre:{fret:5,from:0,to:5},label:'Barre (5fr)'}],
+  'E':    [{frets:[0,2,2,1,0,0],label:'Open'},{frets:[-1,7,9,9,9,7],barre:{fret:7,from:1,to:5},label:'Barre (7fr)'}],
+  'Em':   [{frets:[0,2,2,0,0,0],label:'Open'},{frets:[-1,7,9,9,8,7],barre:{fret:7,from:1,to:5},label:'Barre (7fr)'}],
+  'Am':   [{frets:[-1,0,2,2,1,0],label:'Open'},{frets:[5,7,7,5,5,5],barre:{fret:5,from:0,to:5},label:'Barre (5fr)'}],
+  'Dm':   [{frets:[-1,-1,0,2,3,1],label:'Open'},{frets:[-1,5,7,7,6,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'}],
+  'Cm':   [{frets:[-1,3,5,5,4,3],barre:{fret:3,from:1,to:5},label:'Barre (3fr)'},{frets:[8,10,10,8,8,8],barre:{fret:8,from:0,to:5},label:'Barre (8fr)'}],
+  'B':    [{frets:[-1,2,4,4,4,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'},{frets:[7,9,9,8,7,7],barre:{fret:7,from:0,to:5},label:'Barre (7fr)'}],
+  'B/F#': [{frets:[2,2,4,4,4,2],barre:{fret:2,from:0,to:5}}],
+  'Bm':   [{frets:[-1,2,4,4,3,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'},{frets:[7,9,9,7,7,7],barre:{fret:7,from:0,to:5},label:'Barre (7fr)'}],
+  'Bm7':  [{frets:[-1,2,0,2,0,2],label:'Open'},{frets:[-1,2,4,2,3,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'}],
+  'B7':   [{frets:[-1,2,1,2,0,2],label:'Open'},{frets:[-1,2,4,2,4,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'}],
+  'Em7':  [{frets:[0,2,0,0,0,0],label:'Open'},{frets:[0,2,2,0,3,0],label:'Open (alt)'}],
+  'Em7/D':[{frets:[-1,-1,0,0,0,0]}],
+  'Em7/C#':[{frets:[-1,4,2,0,3,0]}],
+  'A7':   [{frets:[-1,0,2,0,2,0],label:'Open'},{frets:[5,7,5,6,5,5],barre:{fret:5,from:0,to:5},label:'Barre (5fr)'}],
+  'D7':   [{frets:[-1,-1,0,2,1,2],label:'Open'},{frets:[-1,5,7,5,7,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'}],
+  'Dmaj7':[{frets:[-1,-1,0,2,2,2],label:'Open'},{frets:[-1,5,7,6,7,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'}],
+  'Cmaj7':[{frets:[-1,3,2,0,0,0],label:'Open'},{frets:[-1,3,5,4,5,3],barre:{fret:3,from:1,to:5},label:'Barre (3fr)'}],
+  'Gsus4':[{frets:[3,3,0,0,1,3],label:'Open'},{frets:[3,5,5,5,3,3],barre:{fret:3,from:0,to:5},label:'Barre (3fr)'}],
+  'Asus4':[{frets:[-1,0,2,2,3,0],label:'Open'},{frets:[5,7,7,7,5,5],barre:{fret:5,from:0,to:5},label:'Barre (5fr)'}],
+  'A7sus4':[{frets:[-1,0,2,0,3,0],label:'Open'}],
+  'F#m':  [{frets:[2,4,4,2,2,2],barre:{fret:2,from:0,to:5},label:'Barre (2fr)'},{frets:[-1,-1,4,2,2,2],barre:{fret:2,from:3,to:5},label:'Partial (2fr)'}],
+  'Gm':   [{frets:[3,5,5,3,3,3],barre:{fret:3,from:0,to:5},label:'Barre (3fr)'},{frets:[-1,-1,5,3,3,3],barre:{fret:3,from:3,to:5},label:'Partial (3fr)'}],
+  'Dm7':  [{frets:[-1,-1,0,2,1,1],label:'Open'},{frets:[-1,5,7,5,6,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'}],
+  'F':    [{frets:[1,3,3,2,1,1],barre:{fret:1,from:0,to:5},label:'Barre (1fr)'},{frets:[-1,-1,3,2,1,1],barre:{fret:1,from:4,to:5},label:'Partial (1fr)'},{frets:[-1,8,10,10,10,8],barre:{fret:8,from:1,to:5},label:'Barre (8fr)'}]
 };
 
 /* ---- State ---- */
@@ -1124,8 +1198,9 @@ function artHtml(song){
 }
 
 /* ---- Chord diagram SVG ---- */
-function chordSvg(name,w=60,h=78){
-  const d=CHORDS[name];if(!d)return null;
+function chordSvg(name,w=60,h=78,voicingIdx=0){
+  const voicings=CHORDS[name];if(!voicings)return null;
+  const d=voicings[voicingIdx]||voicings[0];if(!d)return null;
   const fr=d.frets.filter(f=>f>0);
   const mx=fr.length?Math.max(...fr):0,mn=fr.length?Math.min(...fr):0;
   const base=(mx>4)?mn:1,disp=4;
@@ -1240,7 +1315,6 @@ function openSong(id){
   document.getElementById('library').classList.remove('active');
   document.getElementById('player').classList.add('active');
   document.getElementById('addSongBtn').classList.add('hidden');
-  document.getElementById('sizeWidget').classList.remove('hidden');
   document.getElementById('playerTitle').textContent=s.title;
   document.getElementById('playerArtist').textContent=s.artist.toUpperCase();
   document.getElementById('bpmLabel').textContent=`${s.bpm||86} bpm`;
@@ -1296,25 +1370,56 @@ function renderPlayer(){
     el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPop(el);}});
   });
 }
-function closePlayer(){stopScroll();document.getElementById('player').classList.remove('active');document.getElementById('library').classList.add('active');document.getElementById('addSongBtn').classList.remove('hidden');document.getElementById('sizeWidget').classList.add('hidden');state.current=null;renderLib(document.getElementById('searchInput').value);}
+function closePlayer(){stopScroll();document.getElementById('player').classList.remove('active');document.getElementById('library').classList.add('active');document.getElementById('addSongBtn').classList.remove('hidden');state.current=null;renderLib(document.getElementById('searchInput').value);}
 
-/* ---- Chord pop ---- */
-function showPop(el){
-  const name=el.dataset.chord,pop=document.getElementById('chordPop'),svg=chordSvg(name,100,126);
-  document.getElementById('popName').textContent=name;
-  document.getElementById('popBody').innerHTML=svg?`<div style="width:100px;height:126px;margin:0 auto">${svg}</div>`:`<div class="pop-missing">Shape not yet in library</div>`;
-  pop.classList.add('open');
-  const r=el.getBoundingClientRect();
-  let left=r.left+r.width/2-64;left=Math.max(8,Math.min(window.innerWidth-138,left));
-  pop.style.left=left+'px';pop.style.top=(r.bottom+window.scrollY+6)+'px';
+/* ---- Chord pop with voicing navigation ---- */
+let popState = { chord: null, idx: 0, count: 0, anchorEl: null };
+
+function renderPopVoicing(){
+  const {chord, idx, count} = popState;
+  const voicings = CHORDS[chord];
+  const svg = chordSvg(chord, 100, 126, idx);
+  const label = voicings && voicings[idx] && voicings[idx].label ? voicings[idx].label : '';
+  document.getElementById('popBody').innerHTML = svg
+    ? `<div style="width:100px;height:126px;margin:0 auto">${svg}</div>${label ? '<div class="pop-voicing-label">'+esc(label)+'</div>' : ''}`
+    : `<div class="pop-missing">Shape not yet in library</div>`;
+  const nav = document.getElementById('popNav');
+  if(count > 1){
+    nav.classList.remove('hidden');
+    document.getElementById('popNavLabel').textContent = `${idx+1} / ${count}`;
+  } else {
+    nav.classList.add('hidden');
+  }
 }
+
+function showPop(el){
+  const name = el.dataset.chord;
+  const voicings = CHORDS[name];
+  popState = { chord: name, idx: 0, count: voicings ? voicings.length : 0, anchorEl: el };
+  document.getElementById('popName').textContent = name;
+  renderPopVoicing();
+  const pop = document.getElementById('chordPop');
+  pop.classList.add('open');
+  const r = el.getBoundingClientRect();
+  let left = r.left + r.width/2 - 64;
+  left = Math.max(8, Math.min(window.innerWidth - 138, left));
+  pop.style.left = left + 'px';
+  pop.style.top = (r.bottom + window.scrollY + 6) + 'px';
+}
+
+function popNav(dir){
+  if(popState.count <= 1) return;
+  popState.idx = (popState.idx + dir + popState.count) % popState.count;
+  renderPopVoicing();
+}
+
 function hidePop(){document.getElementById('chordPop').classList.remove('open');}
 
 /* ---- Auto scroll ---- */
 function startScroll(){
   state.scrollPlaying=true;
   document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">pause</span>';
-  document.getElementById('speedFloat').classList.remove('hidden');
+  document.getElementById('footSpeed').classList.add('visible');
   let last=performance.now();
   const step=now=>{if(!state.scrollPlaying)return;const dt=(now-last)/1000;last=now;window.scrollBy(0,state.scrollSpeed*10*dt);if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}state.scrollRaf=requestAnimationFrame(step);};
   state.scrollRaf=requestAnimationFrame(step);
@@ -1322,7 +1427,7 @@ function startScroll(){
 function stopScroll(){
   state.scrollPlaying=false;if(state.scrollRaf)cancelAnimationFrame(state.scrollRaf);
   document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">play_arrow</span>';
-  document.getElementById('speedFloat').classList.add('hidden');
+  document.getElementById('footSpeed').classList.remove('visible');
 }
 function toggleScroll(){state.scrollPlaying?stopScroll():startScroll();}
 
@@ -1493,6 +1598,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('fontDown').addEventListener('click',()=>{state.fontSize=Math.max(16,state.fontSize-2);renderPlayer();});
   document.getElementById('playBtn').addEventListener('click',toggleScroll);
   document.getElementById('speedRange').addEventListener('input',e=>{state.scrollSpeed=parseInt(e.target.value);});
+  document.getElementById('footSpeed').addEventListener('click',e=>{e.stopPropagation();});
+  document.getElementById('popPrev').addEventListener('click',e=>{e.stopPropagation();popNav(-1);});
+  document.getElementById('popNext').addEventListener('click',e=>{e.stopPropagation();popNav(1);});
   document.getElementById('previewToggle').addEventListener('click',()=>{
     state.previewOpen=!state.previewOpen;
     document.getElementById('previewBody').style.display=state.previewOpen?'':'none';
