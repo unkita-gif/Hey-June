@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hey June</title>
-<link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Slackside+One&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -273,29 +272,32 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 
 /* Player identity — art left, title right */
 .player-identity {
-  padding: 20px 32px;
+  padding: 28px 32px;
   border-bottom: 2px solid var(--ink);
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 12px 24px;
+  align-items: start;
   background: var(--surface);
 }
-/* Album art block — LEFT side */
+/* Album art top-left */
 .player-art-block {
-  flex-shrink: 0;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  grid-row: 1; grid-column: 1;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
 }
 .player-art-img {
-  width: 100px; height: 100px;
+  width: 200px; height: 200px;
   border-radius: 10px; overflow: hidden;
-  background: var(--line); flex-shrink: 0;
+  background: var(--line);
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
 }
 .player-art-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .player-art-img svg { width: 100%; height: 100%; display: block; }
+/* Key controls top-right, aligned to bottom */
 .player-key-wrap {
-  flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  grid-row: 1 / -1; grid-column: 2; align-self: end;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
 .player-key-label {
   font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
@@ -325,8 +327,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--ochre); background: var(--ochre-soft); padding: 3px 10px; border-radius: 2px;
   margin-top: 2px;
 }
-/* Title + artist */
-.player-identity-left { min-width: 0; flex: 1; }
+/* Title + artist — below art */
+.player-identity-left { grid-row: 2; grid-column: 1; min-width: 0; }
 .player-song-title {
   font-family: 'EB Garamond', serif; font-weight: 400;
   font-size: clamp(36px, 5.5vw, 72px); line-height: 0.95;
@@ -511,7 +513,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .nav-slider-range {
   writing-mode: vertical-lr; direction: rtl;
   appearance: slider-vertical;
-  width: 20px; height: 120px;
+  width: 48px; height: 120px;
   accent-color: var(--chord); cursor: pointer;
 }
 
@@ -692,8 +694,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .entry-art { width: 68px; height: 68px; }
   .entry-edit-btn { display: none; }
   .preview-header, .preview-body, .lyric-body { padding-left: 20px; padding-right: 20px; }
-  .player-identity { padding: 20px 20px 16px; }
-  .player-art-img { width: 80px; height: 80px; }
+  .player-identity { padding: 28px 20px; }
+  .player-art-img { width: 160px; height: 160px; }
   .strum-col { display: none; }
 }
 
@@ -729,10 +731,17 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .nav-right-btn { padding: 0 12px; font-size: 10px; }
   .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
 
-  /* Player identity */
-  .player-identity { padding: 16px; gap: 12px; }
-  .player-art-block { display: none; }
+  /* Player identity — stacked vertical on mobile */
+  .player-identity {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 32px 16px; gap: 20px;
+  }
+  .player-art-block { grid-row: auto; grid-column: auto; display: flex; }
+  .player-art-img { width: 120px; height: 120px; }
+  .player-identity-left { grid-row: auto; grid-column: auto; text-align: center; margin-bottom: 20px; }
+  .player-key-wrap { grid-row: auto; grid-column: auto; align-self: center; }
   .player-song-title { font-size: 28px; letter-spacing: 0; }
+  .player-song-artist { margin-top: 6px; }
   .player-key-display { font-size: 32px; }
   .trans-btn { width: 32px; height: 32px; }
 
@@ -749,6 +758,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 
   /* Comments */
   .comments-body { font-size: 18px; padding: 12px 16px 16px; }
+
+  /* Sliders — finger-friendly on mobile */
+  .nav-slider-range { width: 48px; height: 100px; }
+  .nav-slider-panel { min-width: 56px; }
 
   /* Splash */
   .splash-text { font-size: 48px; }
@@ -1001,7 +1014,270 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 <script>
 /* ---- Preloaded songs ---- */
 const PRELOADED = [
-  { id:'yellow', title:'Yellow', artist:'Coldplay', key:'G', capo:4, difficulty:'Intermediate', bpm:86, albumArt:null,
+  { id:'flymetothemoon', title:'Fly Me to the Moon', artist:'Frank Sinatra', key:'Bm', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`Am Dm7 G7 Cmaj7
+
+Fly me to the moon, let me play among the stars,
+
+F Dm E7 Am A7
+
+Let me see what spring is like on Jupiter and Mars,
+
+Dm7 G7 C Am
+
+In other words, hold my hand!
+
+Dm7 G7 C E
+
+In other words, baby kiss me!
+
+Am Dm7 G7 Cmaj7
+
+Fill my heart with song, and let me sing forever more
+
+F Dm E7 Am A7
+
+you are all I long for all I worship & adore
+
+Dm7 G7 C Am E7
+
+In other words, please be true!
+Dm7 G7 Fm C
+
+In other words I love you
+
+Am Dm7 G7 Cmaj7 F Dm E Am Dm7
+G7 Em A7 E7 Dm7 G7 C
+
+Am Dm7 G7 Cmaj7
+
+Fill my heart with song, and let me sing forever more
+
+F Dm E7 Am A7
+
+you are all I long for all I worship & adore
+
+Dm7 G7 C Am
+
+In other words, please be true!
+
+Dm7 G7
+
+In other words
+
+Dm7 G G7 C
+
+In other words I love you!` },
+
+  { id:'creep', title:'Creep', artist:'Radiohead', key:'G', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+G B C Cm
+
+[Verse 1]
+
+G B
+
+When you were here before, couldn't look you in the eyes
+
+C Cm
+
+You're just like an angel, your skin makes me cry
+
+G B
+
+You float like a feather in a beautiful world
+
+C Cm
+
+I wish I was special, you're so fucking special
+
+[Chorus] (play loud)
+
+Cm
+
+(x3, very short)
+
+G B
+
+But I'm a creep, I'm a weirdo
+
+C Cm
+
+What the hell am I doing here? I don't belong here
+
+[Verse 2]
+
+G B
+
+I don't care if it hurts, I wanna have control
+
+C Cm
+
+I want a perfect body, I want a perfect soul
+
+G B
+
+I want you to notice when I'm not around
+
+C Cm
+
+You're so fucking special, I wish I was special
+
+[Chorus] (play loud)
+
+Cm
+
+(x3, very short)
+
+G B
+
+But I'm a creep, I'm a weirdo
+
+C Cm
+
+What the hell am I doing here? I don't belong here
+
+[Bridge] (play loud)
+
+G B
+
+Oooh, oooh, she's running out the door...
+
+C Cm
+
+She's running out, she run, run, run...
+
+G B
+
+Ruuuuuuuun...
+
+C Cm
+
+Ruuuuuuuuuuun...
+
+[Verse 3] (play soft until the end)
+
+G B
+
+Whatever makes you happy, whatever you want
+
+C Cm
+
+You're so fucking special, I wish I was special
+
+[Chorus]
+
+G B
+
+But I'm a creep, I'm a weirdo
+
+C Cm
+
+What the hell am I doing here? I don't belong here
+
+G
+
+I don't belong here` },
+
+  { id:'zombie', title:'Zombie', artist:'The Cranberries', key:'Em', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+Em C G D/F# x4
+
+[Verse 1]
+
+Em C G D/F#
+
+Another head hangs lowly, child is slowly taken
+
+Em C G D/F#
+
+And the violence caused such silence, who are we mistaken
+
+Em C
+
+But you see it's not me, it's not my family
+
+G D/F#
+
+In your head, in your head, they are fighting
+
+Em C
+
+With their tanks and their bombs and their bombs and their guns
+
+G D/F#
+
+in your head, in your head, they are crying
+
+[Chorus 1]
+
+Em C G D/F#
+
+In your head, in your head, zombie, zombie, zombie
+
+Em C G D/F#
+
+What's in your head, in your head, zombie, zombie, zombie
+
+[Instrumental]
+
+Em C G D/F# x2
+
+[Verse 2]
+
+Em C G D/F#
+
+Another mother's breaking heart is taking over
+
+Em C G D/F#
+
+When the violence causes silence, we must be mistaken
+
+Em C
+
+It's the same old theme since 1916
+
+G D/F#
+
+In your head, in your head, they're still fighting
+
+Em C
+
+With their tanks and their bombs and their bombs and their guns
+
+G D/F#
+
+In your head, in your head, they are dying
+
+[Chorus 2]
+
+Em C G D/F#
+
+In your head, in your head, zombie, zombie, zombie
+
+Em C G D/F#
+
+What's in your head, in your head, zombie, zombie, zombie
+
+[Instrumental]
+
+Em C G D/F# x2
+
+Em C Em C x2
+
+[Solo]
+
+Em C G D/F# x3
+
+[Outro]
+
+Em C Em C
+
+Em C Em` },
+
+  { id:'yellow', title:'Yellow', artist:'Coldplay', key:'G', capo:4, difficulty:'Intermediate', bpm:0, albumArt:null,
     body:`[Intro]
 G    G
 G    D    C    G
@@ -1062,102 +1338,2022 @@ Look how they shine for you
                          Cmaj7
 And all the things that you do` },
 
-  { id:'creep', title:'Creep', artist:'Radiohead', key:'G', capo:0, difficulty:'Easy', bpm:92, albumArt:null,
-    body:`[Intro]
-G B C Cm
+  { id:'greeneyes', title:'Green Eyes', artist:'Coldplay', key:'', capo:2, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Verse 1]
 
-[Verse 1]
-                    G                              B
-When you were here before, couldn't look you in the eyes
-                   C                         Cm
-You're just like an angel, your skin makes me cry
-                G                      B
-You float like a feather in a beautiful world
-            C                          Cm
-I wish I was special, you're so fucking special
+G D Am
 
-[Chorus] (play loud)
-         G            B
-But I'm a creep, I'm a weirdo
-                        C               Cm
-What the hell am I doing here? I don't belong here
+Honey you are a rock
+
+G D Am
+
+Upon which I stand
+
+G D Am
+
+And I come here to talk
+
+G D Am
+
+I hope you understand
+
+[Chorus]
+
+Am
+
+The green eyes
+
+C
+
+Yeah the spotlight
+
+G D
+
+Shines upon you
+
+Am
+
+How could
+
+C
+
+Anybody
+
+G D C C/B Am
+
+Deny you ?
+
+C
+
+I came here with a load
+
+G F
+
+And it feels so much lighter
+
+C C/B Am
+
+Now I've met you
+
+C
+
+And honey you should know
+
+G F
+
+That I could never go on
+
+C
+
+Without you
+
+Am
+
+Green eyes
 
 [Verse 2]
-                  G                      B
-I don't care if it hurts, I wanna have control
-                C                      Cm
-I want a perfect body, I want a perfect soul
 
-[Bridge]
-           G                     B
-Oooh, oooh, she's running out the door...
-C                      Cm
-She's running out, she run, run, run...
+G D Am
 
-[Chorus]
-         G            B
-But I'm a creep, I'm a weirdo
-                        C               Cm
-What the hell am I doing here? I don't belong here
-         G
-I don't belong here` },
+Honey you are the sea
 
-  { id:'highanddry', title:'High and Dry', artist:'Radiohead', key:'E', capo:0, difficulty:'Intermediate', bpm:84, albumArt:null,
-    body:`[Intro]
-B/F#    A     E     E
+G D Am
 
-[Verse]
-B/F#                           A                                E          E
-Two jumps in a week, I bet you think that's pretty clever, don't you boy.
-B/F#                       A                              E           E
-Flying on your motorcycle. Watching all the ground beneath you drop.
+Upon which I float
+
+G D Am
+
+And I came here to talk
+
+G D Am
+
+I think you should know
 
 [Chorus]
-              B/F#   A                 E     E
-Don't leave me high,    don't leave me dry,
-              B/F#   A                 E     E
-Don't leave me high,    don't leave me dry.
 
-[Verse]
-B/F#                      A                          E          E
-Drying up in conversation you will be the one who cannot talk.
+Am
+
+Green eyes
+
+C
+
+You're the one that
+
+G D Dsus4 D
+
+I wanted to fi--nd
+
+Am
+
+Anyone who
+
+C
+
+Tried to deny you
+
+G D Dsus4 D
+
+Must be out of their mi--nd
+
+Am C
+
+'cause I came here with a load
+
+G F
+
+And it feels so much lighter
+
+C C C/B Am
+
+Since I've met you
+
+C
+
+And honey you should know
+
+G F
+
+That I could never go on
+
+C C C/B Am
+
+Without you
+
+Green eyes
+
+G
+
+Green eyes ohohohoh
+
+Am
+
+Ohohohoh
+
+Ohohohoh
+
+G
+
+Ohohohoh
 
 [Outro]
-              B/F#   A                 E
-Don't leave me high,    don't leave me dry.` },
 
-  { id:'myway', title:'My Way', artist:'Frank Sinatra', key:'D', capo:0, difficulty:'Intermediate', bpm:70, albumArt:null,
+G D Am
+
+Honey you are a rock
+
+G D Am
+
+Upon which I stand...` },
+
+  { id:'aadat', title:'Aadat', artist:'Jal', key:'C#m', capo:2, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`Bm G
+
+na janay kab say ..umeedein kuch baqi hain..
+
+Bm G Bm
+
+mujhe phir bhi teri yaad..kyun aati hai .. na janay kab say..
+
+Bm A G A
+
+duur jitna bhi tum mujh say pass teray mein
+
+Bm A G A
+
+ab to aadat si hai mujh ko aisay jeenay mein
+
+Bm A G A
+
+zindagi say koi shiqwa hi nahi hai
+
+Bm A G A
+
+ab to zinda hoon mein is neelay aasman mein
+
+Bm A G A
+
+Chaahat aisi hai yeh teri Barhti jaye
+
+Bm A G A
+
+Aahat aise hai yeh teri mujhko sataye
+
+Bm A G A
+
+Yaadain gehri hain yeh kitni Dil doob jaye
+
+Bm A G A
+
+Aur aankhon main yeh ghum num ban jaye
+
+Bm A G A
+
+Ab tau addat si hai mujhko aise jeene main
+
+Bm G A
+
+sabhi yadein hain ......sabhi batein hain
+
+Bm G A
+
+bhula do unhein .....mita do uhein .....` },
+
+  { id:'chhoolo', title:'Chhoo Lo', artist:'The Local Train', key:'E', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
     body:`[Intro]
-| D | Dmaj7 |
 
-[Verse 1]
-   D               Dmaj7
-And now, the end is near,
-        D7            B7
-And so I face the final curtain,
-   Em7                Em7/D
-My friend. I'll say it clear,
-            Em7/C#   A7       D
-I'll state my case of which I'm certain.
-           G             Gm
-I traveled each and every highway,
-   D                    A       Asus4   G    D
-And more, much more than this, I did it my way.
+E5 Esus2 E Asus2 Bsus4 x2
 
-[Verse 2]
-   D               Dmaj7
-Regrets, I've had a few,
-        D7                B7
-But then again, too few to mention.
-           G              Gm
-Each careful step along the byway,
-   D                    A     Asus4    G        D
-And more, much more than this, I did it my way.
+E5 Emaj7 Asus2 E5 Emaj7 Bsus4
+
+E5 Emaj7 Aadd9 Badd11
+
+[Verse]
+
+E B
+
+Khada hoon aaj bhi wahin
+
+A B
+
+Ke dil phir bekarar hai
+
+E B
+
+Khada hoon aaj bhi wahin
+
+A B
+
+Ke tera intezaar hai
 
 [Chorus]
-  Asus4    G       D
-And did it my way.` }
+
+C#m B
+
+Choo lo jo mujhe tum kabhi
+
+A B
+
+Kho na jau main raat din
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+C#m B
+
+Keh do jo ab tum ek baar
+
+A B
+
+Mere ho bas tum mere
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+[Interlude]
+
+E B A B
+
+C#m B A B
+
+[Verse]
+
+E B
+
+Khada hoon aaj bhi wahin
+
+A B
+
+Lagi teri hi aas hai
+
+E B
+
+Kaisi hai ye bebasi
+
+A B
+
+Ye kaisi dil ki pyaas hai
+
+[Chorus]
+
+C#m B
+
+Choo lo jo mujhe tum kabhi
+
+A B
+
+Kho na jau main raat din
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+C#m B
+
+Keh do jo ab tum ek baar
+
+A B
+
+Mere ho bas tum mere
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+[Bridge]
+
+C#m B
+
+Reh jaunga yuhi
+
+A B
+
+Bas yuhi, bas yuhi
+
+C#m B
+
+Reh jaunga yuhi
+
+A B
+
+Bas yuhi, bas yuhi
+
+C#m B
+
+Reh jaunga yuhi
+
+A B
+
+Bas yuhi, bas yuhi
+
+C#m B
+
+Reh jaunga yuhi
+
+A B
+
+Bas yuhi, bas yuhi
+
+[Chorus]
+
+C#m B
+
+Choo lo jo mujhe tum kabhi
+
+A B
+
+Kho na jau main raat din
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+C#m B
+
+Keh do jo ab tum ek baar
+
+A B
+
+Mere ho bas tum mere
+
+C#m B A B
+
+Nazaron mein tum ho base
+
+[Solo]
+
+E B A B
+
+C#m B A B
+
+E B A B
+
+C#m B A B
+
+[Outro]
+
+E
+
+Haan main ruka hoon
+
+B
+
+Tu jaa chuka hai
+
+A
+
+Haan main ruka hoon
+
+B
+
+Tu jaa chuka hai` },
+
+  { id:'aaogetumkabhi', title:'Aaoge Tum Kabhi', artist:'The Local Train', key:'', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+F Am G C
+
+F Am G C
+
+[Verse]
+
+F Am G C
+
+Kehta raha wo jaane de mujhko
+
+F Am G C
+
+Besabri hai teri kami hai
+
+[Chorus]
+
+F
+
+Aaoge tum kabhi
+
+Am
+
+Meri Jaan keh rahi
+
+Dm
+
+Gayga ye sama
+
+G C
+
+Gaygi ye zameen
+
+F
+
+Badlega ye jahan
+
+Am
+
+gayega aasmaan
+
+Dm G C
+
+Aaoge tum kabhi meri jaan keh rahi
+
+[Verse]
+
+F Am G C
+
+Sehta raha wo naa jaane kabse
+
+F Am G C
+
+Bedardi hai teri kami hai
+
+[Chorus]
+
+F
+
+Aaoge tum kabhi
+
+Am
+
+Meri Jaan keh rahi
+
+Dm
+
+Gayga ye sama
+
+G C
+
+Gaygi ye zameen
+
+F
+
+Badlega ye jahan
+
+Am
+
+gayega aasmaan
+
+Dm G C
+
+Aaoge tum kabhi meri jaan keh rahi
+
+F Am
+
+Aaoge tum kabhi meri jaan keh rahi
+
+Dm
+
+Gayga ye sama
+
+G C
+
+Gaygi ye zameen
+
+F
+
+Badlega ye jahan
+
+Am
+
+gayega aasmaan
+
+Dm G C
+
+Aaoge tum kabhi meri jaan keh rahi
+
+[Instrumental]
+
+F Am G C
+
+[Pre-Chorus]
+
+F
+
+Soch lo mujhe
+
+Am
+
+Dhund lo mujhe
+
+Dm
+
+Tham lo mujhe
+
+C
+
+Rok lo mujhe
+
+F
+
+Soch lo mujhe
+
+Am
+
+Dhund lo mujhe
+
+Dm
+
+Tham lo mujhe
+
+C
+
+Rok lo mujhe
+
+F
+
+Soch lo mujhe
+
+Am
+
+Tham lo mujhe
+
+G C
+
+Rok lo mujhe
+
+[Chorus]
+
+F
+
+Aaoge tum kabhi
+
+Am
+
+Meri Jaan keh rahi
+
+Dm
+
+Gayga ye sama
+
+G C
+
+Gaygi ye zameen
+
+F
+
+Badlega ye jahan
+
+Am
+
+gayega aasmaan
+
+Dm G C
+
+Aaoge tum kabhi meri jaan keh rahi
+
+F
+
+Na Na Na
+
+Am
+
+Na Na Na
+
+G
+
+Na Na Na
+
+C
+
+Aaaeeeeee
+
+F
+
+Na Na Na
+
+Am
+
+Na Na Na
+
+G
+
+Na Na Na
+
+C
+
+Aaaeeeeee
+
+[Outro]
+
+C C G Am G Am G
+
+F C F Am
+
+F C C ...` },
+
+  { id:'laila', title:'Laila', artist:'Faridkot', key:'Am', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+Am C Am x2
+
+Am G Am x2
+
+Am C G Am
+
+Baat hai samay ki jab majnoo tha kuch deewaana
+
+Am C G Am
+
+Laila ki galiyo se tha uska aana jaana
+
+Am C Am F x2
+
+[Verse 1]
+
+Am C G Am
+
+Baat hai samay ki jab majnoo tha kuch deewaana
+
+Am C G Am
+
+Laila ki galiyo se tha uska aana jaana
+
+Am G F Am
+
+Raate uski rangi thi aur har din tha suhaana
+
+Am G F Am
+
+Woh sab se kehta rehta mujhe laila ka ho jaana
+
+[Chorus]
+
+Am C G Bb
+
+Par laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye hey!
+
+Am C Am G x2
+
+[Verse 2]
+
+Am C G Am
+
+Oh ho, laila boli majnoo hey tu kyu yahan pe aaye
+
+Am C G Am
+
+Raato ko gaane gaye aur logo ko sataye!
+
+Am G F Am
+
+Mujhko to na bhata hai tera yahan pe aana
+
+Am G F Am
+
+Tune sab kuch kho dena, tune kuch nahi hai paana
+
+Am C G Bb
+
+Par laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye!
+
+[Chorus]
+
+Am C G Bb
+
+Laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye lailaaa!
+
+[Bridge]
+
+C Am
+
+Ni sa, ni sa, ni sa, ni sa
+
+C Am
+
+Re sa, re sa, re sa, re sa
+
+C G
+
+Sa re ga ma ma ma ma ma ma ma ma ma ma ma ma ma pa oh ho.. oh oh
+ho...
+
+Am C G Bb
+
+Laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye yeah heeeeya aaaaahhhhaa!
+
+[Chorus]
+
+Am C G Bb
+
+Oh ho ho... laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye
+
+Am C G Bb
+
+Laila oh laila, tu saamane kyu na aaye
+
+Am C G D
+
+Laila oh laila, kyu mujhko yu sataye!
+
+[Outro]
+
+Am Am C C
+
+Laila ah ha, laila ah ha, laila ah ha, laila ah ha
+
+G Bb
+
+Tu saamane kyu na aaye
+
+Am Am C C
+
+Laila oh, laila oh, laila oh, laila oh
+
+G D
+
+Tu mujhko kyu sataye!
+
+Lailaaaa...` },
+
+  { id:'dilharey', title:'Dil Harey', artist:'Jal', key:'', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`G C
+
+Ankhoon Say Jaab Bhi Ho Teri Ankhein Judaa
+
+G C
+
+Maan Say Jaab Bhi Ho Tera Maan Khafaa
+
+Em C
+
+Tou Jee Pukarey ..... Pukarey Tujhey
+
+Em C
+
+Tou Maan Ghabraaye ..... Bulayee Tujhey
+
+G
+
+Kay dil Harey Pukarey Tujhey
+
+C
+
+Maan Ja Ray Mana Laye Mujehy
+
+G
+
+Sun Pyareey Lagaley Galeyy
+
+C
+
+Kho Ja Ray Tou Gaaley Sung Ray
+
+G C
+
+Tere Bina Zindagi Lagey Ek Sazaa
+
+G C
+
+Tera Saath Ho Yeh Sazaa Lagey Ek Jazaa
+
+Em C
+
+Tou Barhtey Jayein Yeh Rasety Sareyy
+
+Em C
+
+Duniyaa Pichey Hum Hein Aagey
+
+G
+
+Kay Dil Harey Pukarey Tujhey
+
+C
+
+Maan Ja Ray Mana Laye Mujehy
+
+G
+
+Sun Pyareey Lagaley Galeyy
+
+C
+
+Kho Ja Ray Tou Gaaley Sung Ray` },
+
+  { id:'sajni', title:'Sajni', artist:'Jal', key:'', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+G#m F# C#m D#m x2
+
+[Verse 1]
+
+G#m F#
+
+Main teri aankhon mein rehta hu
+
+C#m D#m
+
+Tujhey pata na chale
+
+G#m F#
+
+Tere har pal mein guzra hu
+
+C#m D#m
+
+Tujhey pata na chale
+
+[Interlude]
+
+E
+
+Karein to phir kya karein
+
+F#
+
+Tere bina kaisey jiyein
+
+E
+
+Aakhon mein pyar liey
+
+F#
+
+Bolo kahan kahan phire
+
+[Verse 2]
+
+G#m F#
+
+Kafa to hum bhi hain, tum bhi ho
+
+C#m D#m
+
+Humein pata na chale
+
+G#m F#
+
+Judai ka mujhey ghum bhi hai
+
+C#m D#m
+
+Koi aisi khata na kare
+
+[Interlude]
+
+E
+
+Karein to phir kya karein
+
+F#
+
+Tere bina kaisey jiyein
+
+E
+
+Aakhon mein pyar liey
+
+F#
+
+Bolo kahan kahan phire
+
+[Chorus]
+
+G#m F#
+
+Sajni paas bulao na
+
+C#m D#m
+
+Key dil aaj tuta hai - aaj tuta hai
+
+G#m F#
+
+Saajan maan jaao na
+
+C#m D#m
+
+Key moh aaj rootha hai - aaj rootha hai
+
+C#m D#m C#m
+
+Koi, usey manaye na - jaane jaan
+
+C#m D#m E F#
+
+Dil, tujhey hi chahe na - ohhhhh
+
+[Guitar Solo]
+
+G#m F#
+
+Humein dil sey bhulao na
+
+C#m D#m
+
+Yehi ab kehna ha - kehna hai
+
+G#m F# C#m C#m
+
+Tum paas aao na - aao naaaaa
+
+Derere narena derere narena x8
+
+(Chords play G#m F# C#m D#m)
+
+[Chorus]
+
+G#m F#
+
+Sajni paas bulao na
+
+C#m D#m
+
+Key dil aaj tuta hai - aaj tuta hai
+
+G#m F#
+
+Saajan maan jaao na
+
+C#m D#m
+
+Key moh aaj rootha hai - aaj rootha hai
+
+C#m D#m C#m
+
+Koi, usey manaye na - jaane jaan
+
+C#m D#m E F#
+
+Dil, tujhey hi chahe na - ohhhhh
+
+End with Alap
+
+(Chords play G#m F# C#m D#m)` },
+
+  { id:'perfect', title:'Perfect', artist:'Ed Sheeran', key:'Ab', capo:1, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+G
+
+[Verse 1]
+
+G Em
+
+I found a love for me
+
+C D
+
+Darling, just dive right in, and follow my lead
+
+G Em
+
+Well, I found a girl beautiful and sweet
+
+C D
+
+I never knew you were the someone waiting for me
+
+[Pre-Chorus]
+
+G
+
+Cause we were just kids when we fell in love
+
+Em C G D
+
+Not knowing what it was, I will not give you up this ti-ime
+
+G Em
+
+Darling just kiss me slow, your heart is all I own
+
+C D
+
+And in your eyes you're holding mine
+
+[Chorus]
+
+Em C G D Em
+
+Baby, I'm dancing in the dark, with you between my arms
+
+C G D Em
+
+Barefoot on the grass, listening to our favourite song
+
+C G D Em
+
+When you said you looked a mess, I whispered underneath my breath
+
+C G D G
+
+But you heard it, darling you look perfect tonight
+
+[Verse 2]
+
+G Em
+
+Well, I found a woman, stronger than anyone I know
+
+C D
+
+She shares my dreams, I hope that someday I'll share her home
+
+G Em
+
+I found a love, to carry more than just my secrets
+
+C D
+
+To carry love, to carry children of our own
+
+[Pre-Chorus]
+
+G Em
+
+We are still kids, but we're so in love, fighting against all odds
+
+C G D
+
+I know we'll be alright this ti-ime
+
+G Em
+
+Darling just hold my hand, be my girl, I'll be your man
+
+C D
+
+I see my future in your eyes
+
+[Chorus]
+
+Em C G D Em
+
+Baby, I'm dancing in the dark, with you between my arms
+
+C G D Em
+
+Barefoot on the grass, listening to our favourite song
+
+C G D
+
+When I saw you in that dress, looking so beautiful
+
+Em C G D G
+
+I don't deserve this, darling you look perfect tonight
+
+[Interlude]
+
+[Chorus]
+
+Em C G D Em
+
+Baby, I'm dancing in the dark, with you between my arms
+
+C G D Em
+
+Barefoot on the grass, listening to our favourite song
+
+C G D Em
+
+I have faith in what I see, now I know I have met an angel
+
+C G D
+
+In person, and she looks perfect
+
+[Outro]
+
+G/B C Dsus4 D G
+
+I don't deserve this, you look perfect tonight
+
+|(G) D/F# Em D | C D | G` },
+
+  { id:'photograph', title:'Photograph', artist:'Ed Sheeran', key:'E', capo:2, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+D Bm A G
+
+[Verse 1]
+
+D
+
+Loving can hurt
+
+Bm
+
+Loving can hurt sometimes
+
+A G
+
+But it's the only thing that I know
+
+D
+
+When it gets hard
+
+Bm
+
+You know it can get hard sometimes
+
+A G
+
+It is the only thing that makes us feel alive
+
+[Pre-Chorus]
+
+Bm G
+
+We keep this love in a photograph
+
+D A
+
+We make these memories for ourselves
+
+Bm
+
+Where our eyes are never closing
+
+G
+
+Our hearts were never broken
+
+D A
+
+And times forever frozen still
+
+[Chorus]
+
+D
+
+So you can keep me inside the pocket of your
+
+A
+
+Ripped jeans holding me closer till our
+
+Bm G
+
+Eyes meet, you won't ever be alone
+
+D
+
+Wait for me to come home
+
+[Verse 2]
+
+D
+
+Loving can heal
+
+Bm
+
+Loving can mend your soul
+
+A G
+
+And it's the only thing that I know
+
+D
+
+I swear it will get easier
+
+Bm
+
+remember that with every piece of ya
+
+A G
+
+It is the only thing we take with us when we die
+
+[Pre-Chorus]
+
+Bm G
+
+We keep this love in a photograph
+
+D A
+
+We make these memories for ourselves
+
+Bm
+
+Where our eyes are never closing
+
+G
+
+Our hearts were never broken
+
+D A
+
+And times forever frozen still
+
+[Chorus]
+
+D
+
+So you can keep me inside the pocket of your
+
+A
+
+Ripped jeans holding me closer till our
+
+Bm G
+
+Eyes meet, you won't ever be alone
+
+D
+
+And if you hurt me that's okay baby, only
+
+A
+
+Words bleed inside these pages you just
+
+Bm G
+
+Hold me, and I won't ever let you go
+
+[Bridge]
+
+Bm
+
+Wait for me to come home
+
+G
+
+Wait for me to come home
+
+D
+
+Wait for me to come home
+
+A
+
+Wait for me to come home
+
+[Chorus]
+
+D
+
+Oh, you can fit, me inside the necklace you got when you were
+
+A
+
+16 next to your heartbeat where I
+
+Bm G
+
+Should be, keep it deep within your soul
+
+D
+
+And if you hurt me that's okay baby only
+
+A
+
+Words bleed inside these pages you just
+
+Bm G
+
+Hold me and I won't ever let you go
+
+[Outro]
+
+D
+
+When I'm away I will remember how you
+
+A Bm
+
+Kissed me under the lamp post back on sixth street
+
+G
+
+Hearing you whisper through the phone
+
+G N.C.
+
+Wait for me to come home` },
+
+  { id:'lethergo', title:'Let Her Go', artist:'Passenger', key:'Em', capo:7, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+G | Fmaj7 G6 Am G6
+
+Fmaj7 G6 Am G6
+
+[Chorus]
+
+F C
+
+Well, you only need the light when it's burning low
+
+G Am
+
+Only miss the sun when it starts to snow
+
+F C G
+
+Only know you love her when you let her go
+
+F C
+
+Only know you've been high when you're feeling low
+
+G Am
+
+Only hate the road when you're missin' home
+
+F C
+
+Only know you love her when you let her go
+
+G
+
+And you let her go
+
+[Instrumental]
+
+Am F G Em
+
+Am F G
+
+[Verse 1]
+
+Am F
+
+Staring at the bottom of your glass
+
+G Em
+
+Hoping one day you'll make a dream last
+
+Am F G
+
+But dreams come slow and they go so fast
+
+Am F
+
+You see her when you close your eyes
+
+G Em
+
+Maybe one day you'll understand why
+
+Am F G
+
+Everything you touch surely dies
+
+[Chorus]
+
+F C
+
+But you only need the light when it's burning low
+
+G Am
+
+Only miss the sun when it starts to snow
+
+F C G
+
+Only know you love her when you let her go
+
+F C
+
+Only know you've been high when you're feeling low
+
+G Am
+
+Only hate the road when you're missin' home
+
+F C G
+
+Only know you love her when you let her go
+
+[Verse 2]
+
+Am F
+
+Staring at the ceiling in the dark
+
+G Em
+
+Same old empty feeling in your heart
+
+Am F G
+
+'Cause love comes slow and it goes so fast
+
+Am F
+
+Well you see her when you fall asleep
+
+G Em
+
+But never to touch and never to keep
+
+Am
+
+'Cause you loved her too much
+
+F G
+
+And you dived too deep
+
+[Chorus]
+
+F C
+
+Well, you only need the light when it's burning low
+
+G Am
+
+Only miss the sun when it starts to snow
+
+F C G
+
+Only know you love her when you let her go
+
+F C
+
+Only know you've been high when you're feeling low
+
+G Am
+
+Only hate the road when you're missin' home
+
+F C G
+
+Only know you love her when you let her go
+
+[Bridge]
+
+Am
+
+And you let her go
+
+F G
+
+Ooooo ooooo oooooo
+
+Am
+
+And you let her go
+
+F G
+
+Ooooooo ooooo ooooo
+
+Am F G Em
+
+And you let her go
+
+[Interlude]
+
+Am F G
+
+[Chorus]
+
+F C
+
+'Cause you only need the light when it's burning low
+
+G Am
+
+Only miss the sun when it starts to snow
+
+F C G
+
+Only know you love her when you let her go
+
+F C
+
+Only know you've been high when you're feeling low
+
+G Am
+
+Only hate the road when you're missin' home
+
+F C G
+
+Only know you love her when you let her go
+
+[Chorus] (One Strum)
+
+F C
+
+'Cause you only need the light when it's burning low
+
+G Am
+
+Only miss the sun when it starts to snow
+
+F C G
+
+Only know you love her when you let her go
+
+N.C.
+
+Only know you've been high when you're feeling low
+
+Only hate the road when you're missin' home
+
+Only know you love her when you let her go
+
+And you let her go` },
+
+  { id:'wonderwall', title:'Wonderwall', artist:'Oasis', key:'F#m', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+F#m7 A Esus4 B7sus4
+
+F#m7 A Esus4 B7sus4
+
+F#m7 A Esus4 B7sus4
+
+F#m7 A Esus4 B7sus4
+
+[Verse 1]
+
+F#m7 A
+
+Today is gonna be the day
+
+Esus4 B7sus4
+
+That they're gonna throw it back to you
+
+F#m7 A
+
+By now you should've somehow
+
+Esus4 B7sus4
+
+Realised what you gotta do
+
+F#m7 A
+
+I don't believe that anybody
+
+Esus4 B7sus4 D Esus4 B7sus4
+
+Feels the way I do about you now
+
+[Verse 2]
+
+F#m7 A
+
+Backbeat the word is on the street
+
+Esus4 B7sus4
+
+That the fire in your heart is out
+
+F#m7 A
+
+I'm sure you've heard it all before
+
+Esus4 B7sus4
+
+But you never really had a doubt
+
+F#m7 A Esus4
+
+I don't believe that anybody feels
+
+B7sus4 F#m7 A Esus4 B7sus4
+
+The way I do about you now
+
+[Pre-chorus]
+
+D Esus4 F#m
+
+And all the roads we have to walk are winding
+
+D Esus4 F#m
+
+And all the lights that lead us there are blinding
+
+D Esus4
+
+There are many things that I would
+
+F#m7 Esus4 A
+
+Like to say to you
+
+Esus4 B7sus4
+
+But I don't know how
+
+[Chorus]
+
+D F#m7 A
+
+Because maybe
+
+F#m7 D F#m7 A
+
+You're gonna be the one that saves me
+
+F#m7 D F#m7 A
+
+And after all
+
+F#m7 D F#m7 A F#m7 A
+
+You're my wonderwall
+
+[Verse 3]
+
+F#m7 A
+
+Today was gonna be the day
+
+Esus4 B7sus4
+
+But they'll never throw it back to you
+
+F#m7 A
+
+By now you should've somehow
+
+Esus4 B7sus4
+
+Realised what you're not to do
+
+F#m7 A
+
+I don't believe that anybody
+
+Esus4 B7sus4
+
+Feels the way I do
+
+F#m7 A Esus4 B7sus4
+
+About you now
+
+[Pre-chorus]
+
+D Esus4 F#m
+
+And all the roads that lead you there are winding
+
+D Esus4 F#m
+
+And all the lights that light the way are blinding
+
+D Esus4 F#m7 Esus4 A
+
+There are many things that I would like to say to you
+
+Esus4 B7sus4
+
+But I don't know how
+
+[Chorus]
+
+D F#m7 A
+
+I said maybe
+
+F#m7 D F#m7 A
+
+You're gonna be the one that saves me
+
+F#m7 D F#m7 A
+
+And after all
+
+F#m7 D F#m7 A F#m
+
+You're my wonderwall
+
+D F#m7 A
+
+I said maybe (I said maybe)
+
+F#m7 D F#m7 A
+
+You're gonna be the one that saves me
+
+F#m7 D F#m7 A
+
+And after all
+
+F#m7 D F#m7 A F#m
+
+You're my wonderwall
+
+D F#m7 A
+
+I said maybe (I said maybe)
+
+F#m7 D F#m7 A
+
+You're gonna be the one that saves me (that saves me)
+
+F#m7 D F#m7 A
+
+You're gonna be the one that saves me (that saves me)
+
+F#m7 D F#m7 A F#m
+
+You're gonna be the one that saves me (that saves me)
+
+[Outro]
+
+D F#m7 A F#m7
+
+D F#m7 A F#m7
+
+D F#m7 A F#m7
+
+D F#m7 A F#m7` },
+
+  { id:'chasingcars', title:'Chasing Cars', artist:'Snow Patrol', key:'A', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Chords]
+
+A xx79xx
+
+E/G# xx69xx
+
+D x5x9xx (Dsus2)
+
+[Intro]
+
+A
+
+[Verse 1]
+
+A E/G# D A
+
+We'll do it all, everything, on our own.
+
+A E/G# D A
+
+We don't need anything, or anyone.
+
+[Chorus]
+
+A E/G#
+
+If I lay here, if I just lay here
+
+Dmaj7 A
+
+Would you lie with me, and just forget the world.
+
+[Verse 2]
+
+A E/G# D A
+
+I don't quite know how to say how I feel
+
+A E/G# D A
+
+Those three words, are said too much, they're not enough.
+
+[Chorus]
+
+A E/G#
+
+If I lay here, if I just lay here
+
+Dmaj7 A
+
+Would you lie with me, and just forget the world.
+
+A E/G#
+
+Forget what we're told, before we get too old
+
+Dmaj7 A
+
+Show me a garden that's bursting into life.
+
+[Verse 3]
+
+A E/G# D A
+
+Let's waste time, chasing cars, around our heads.
+
+A E/G# D A
+
+I need your grace to remind me, to find my own.
+
+[Chorus]
+
+A E/G#
+
+If I lay here, if I just lay here
+
+Dmaj7 A
+
+Would you lie with me, and just forget the world.
+
+A E/G#
+
+Forget what we're told, before we get too old
+
+Dmaj7 A
+
+Show me a garden that's bursting into life.
+
+A E/G#
+
+All that I am, all that I ever was
+
+Dmaj7 A
+
+Is here in your perfect eyes, they're all I can see
+
+A E/G#
+
+I don't know where, confused about how as well
+
+Dmaj7 A
+
+just know that these things will never change for us at all.
+
+[Outro]
+
+A E/G#
+
+If I lay here, if I just lay here
+
+Dmaj7
+
+Would you lie with me, and just forget the world.
+
+[Outro]
+
+A` },
+
+  { id:'highanddry', title:'High and Dry', artist:'Radiohead', key:'', capo:0, difficulty:'Intermediate', bpm:0, albumArt:null,
+    body:`[Intro]
+
+2 bars drums
+
+B/F# A E E
+
+B/F# A E E
+
+[Verse]
+
+B/F# A E E
+
+Two jumps in a week, I bet you think that's pretty clever, don't you
+boy.
+
+B/F# A E E
+
+Flying on your motorcycle. Watching all the ground beneath you drop.
+
+B/F# A E E
+
+You'd kill yourself for recognition. Kill yourself to never ever
+stop.
+
+B/F# A E E
+
+You broke another mirror. You're turning into something you are not.
+
+[Chorus]
+
+B/F# A E E
+
+Don't leave me high, don't leave me dry,
+
+B/F# A E E
+
+Don't leave me high, don't leave me dry.
+
+B/F# A E E
+
+[Verse]
+
+B/F# A E E
+
+Drying up in conversation you will be the one who cannot talk.
+
+B/F# A E
+
+All your insides fall to pieces. You just sit there wishing you could
+still make love.
+
+E
+
+B/F# A E E
+
+They're the ones who'll hate you when you think you've got the
+world all sussed out.
+
+B/F# A E E
+
+They're the ones who'll spit at you. You will be the one screaming
+out.
+
+[Chorus]
+
+B/F# A E E
+
+Don't leave me high, don't leave me dry,
+
+B/F# A E E
+
+Don't leave me high, don't leave me dry.
+
+B/F# A E E
+
+B/F# A E E
+
+[Verse]
+
+B/F# A E E
+
+It's the best thing that you ever had. The best thing that you ever
+ever had.
+
+B/F# A E E
+
+It's the best thing that you ever had. The best thing you have had
+has gone away.
+
+[Chorus]
+
+B/F# A E E
+
+So don't leave me high, don't leave me dry,
+
+B/F# A E E
+
+Don't leave me high, don't leave me dry.
+
+B/F# A E E
+
+Don't leave me high,
+
+B/F# A E
+
+Don't leave me high, don't leave me dry.` }
 ];
+
 
 /* ---- Chord library ---- */
 const CHORDS = {
@@ -1188,7 +3384,33 @@ const CHORDS = {
   'F#m':  [{frets:[2,4,4,2,2,2],barre:{fret:2,from:0,to:5},label:'Barre (2fr)'},{frets:[-1,-1,4,2,2,2],barre:{fret:2,from:3,to:5},label:'Partial (2fr)'}],
   'Gm':   [{frets:[3,5,5,3,3,3],barre:{fret:3,from:0,to:5},label:'Barre (3fr)'},{frets:[-1,-1,5,3,3,3],barre:{fret:3,from:3,to:5},label:'Partial (3fr)'}],
   'Dm7':  [{frets:[-1,-1,0,2,1,1],label:'Open'},{frets:[-1,5,7,5,6,5],barre:{fret:5,from:1,to:5},label:'Barre (5fr)'}],
-  'F':    [{frets:[1,3,3,2,1,1],barre:{fret:1,from:0,to:5},label:'Barre (1fr)'},{frets:[-1,-1,3,2,1,1],barre:{fret:1,from:4,to:5},label:'Partial (1fr)'},{frets:[-1,8,10,10,10,8],barre:{fret:8,from:1,to:5},label:'Barre (8fr)'}]
+  'F':    [{frets:[1,3,3,2,1,1],barre:{fret:1,from:0,to:5},label:'Barre (1fr)'},{frets:[-1,-1,3,2,1,1],barre:{fret:1,from:4,to:5},label:'Partial (1fr)'},{frets:[-1,8,10,10,10,8],barre:{fret:8,from:1,to:5},label:'Barre (8fr)'}],
+  'Bb':   [{frets:[6,8,8,7,6,6],barre:{fret:6,from:0,to:5},label:'Barre (6fr)'},{frets:[-1,1,3,3,3,1],barre:{fret:1,from:1,to:5},label:'Barre (1fr)'}],
+  'C#m':  [{frets:[-1,4,6,6,5,4],barre:{fret:4,from:1,to:5},label:'Barre (4fr)'},{frets:[9,11,11,9,9,9],barre:{fret:9,from:0,to:5},label:'Barre (9fr)'}],
+  'D#m':  [{frets:[-1,6,8,8,7,6],barre:{fret:6,from:1,to:5},label:'Barre (6fr)'},{frets:[11,13,13,11,11,11],barre:{fret:11,from:0,to:5},label:'Barre (11fr)'}],
+  'G#m':  [{frets:[4,6,6,4,4,4],barre:{fret:4,from:0,to:5},label:'Barre (4fr)'},{frets:[-1,-1,6,4,4,4],barre:{fret:4,from:3,to:5},label:'Partial (4fr)'}],
+  'F#':   [{frets:[2,4,4,3,2,2],barre:{fret:2,from:0,to:5},label:'Barre (2fr)'},{frets:[-1,-1,4,3,2,2],barre:{fret:2,from:4,to:5},label:'Partial (2fr)'}],
+  'E7':   [{frets:[0,2,0,1,0,0],label:'Open'},{frets:[-1,7,9,7,9,7],barre:{fret:7,from:1,to:5},label:'Barre (7fr)'}],
+  'G7':   [{frets:[3,2,0,0,0,1],label:'Open'},{frets:[3,5,3,4,3,3],barre:{fret:3,from:0,to:5},label:'Barre (3fr)'}],
+  'Fm':   [{frets:[1,3,3,1,1,1],barre:{fret:1,from:0,to:5},label:'Barre (1fr)'},{frets:[-1,-1,3,1,1,1],barre:{fret:1,from:3,to:5},label:'Partial (1fr)'}],
+  'Fmaj7':[{frets:[-1,-1,3,2,1,0],label:'Open'},{frets:[1,3,2,2,1,1],barre:{fret:1,from:0,to:5},label:'Barre (1fr)'}],
+  'F#m7': [{frets:[2,4,2,2,2,2],barre:{fret:2,from:0,to:5},label:'Barre (2fr)'},{frets:[-1,-1,2,2,2,2],barre:{fret:2,from:2,to:5},label:'Partial (2fr)'}],
+  'B7sus4':[{frets:[-1,2,4,2,5,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'},{frets:[7,9,7,9,7,7],barre:{fret:7,from:0,to:5},label:'Barre (7fr)'}],
+  'Esus4': [{frets:[0,2,2,2,0,0],label:'Open'},{frets:[-1,7,9,9,10,7],barre:{fret:7,from:1,to:5},label:'Barre (7fr)'}],
+  'Dsus4': [{frets:[-1,-1,0,2,3,3],label:'Open'}],
+  'Dsus2': [{frets:[-1,-1,0,2,3,0],label:'Open'}],
+  'D/F#':  [{frets:[2,0,0,2,3,2],label:'Open'},{frets:[-1,-1,4,2,3,2],label:'Alt'}],
+  'C/B':   [{frets:[-1,2,0,0,1,0],label:'Open'}],
+  'E/G#':  [{frets:[4,2,2,1,0,0],label:'Open'},{frets:[-1,-1,6,4,5,4],label:'Alt'}],
+  'G/B':   [{frets:[-1,2,0,0,0,3],label:'Open'}],
+  'G6':    [{frets:[3,2,0,0,0,0],label:'Open'},{frets:[3,2,0,0,3,0],label:'Open (alt)'}],
+  'E5':    [{frets:[0,2,2,-1,-1,-1],label:'Power'},{frets:[-1,7,9,9,-1,-1],label:'Power (7fr)'}],
+  'Esus2': [{frets:[0,2,4,4,0,0],label:'Open'}],
+  'Emaj7': [{frets:[0,2,1,1,0,0],label:'Open'}],
+  'Asus2': [{frets:[-1,0,2,2,0,0],label:'Open'}],
+  'Bsus4': [{frets:[-1,2,4,4,5,2],barre:{fret:2,from:1,to:5},label:'Barre (2fr)'}],
+  'Aadd9': [{frets:[-1,0,2,2,0,0],label:'Open'}],
+  'Badd11':[{frets:[-1,2,4,4,0,0],label:'Open'}]
 };
 
 /* ---- State ---- */
