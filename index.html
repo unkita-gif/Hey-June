@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hey June</title>
-<link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Slackside+One&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -232,11 +231,11 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 .fab-add {
   position: fixed; bottom: 32px; right: 32px; z-index: 30;
   background: var(--ink); color: var(--bg);
-  border-radius: 3px; height: 60px;
-  padding: 0 28px 0 22px;
+  border-radius: 100px; height: 52px;
+  padding: 0 26px 0 20px;
   display: flex; align-items: center; gap: 8px;
   font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.8px; text-transform: uppercase;
+  letter-spacing: 0.9px; text-transform: uppercase;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   transition: background 0.15s, box-shadow 0.12s;
 }
@@ -253,14 +252,15 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   display: flex; align-items: stretch; justify-content: space-between;
   gap: 0; min-height: 52px;
 }
-.back-link {
-  font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted);
-  display: flex; align-items: center; gap: 6px; transition: color 0.12s;
-  padding: 0 32px;
+/* Ghost title in sticky nav (appears on scroll) */
+.player-nav-title {
+  flex: 1; padding: 0 16px 0 24px;
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: flex; align-items: center;
+  opacity: 0; transition: opacity 0.2s;
 }
-.back-link:hover { color: var(--ink); }
-.nav-right { display: flex; align-items: stretch; gap: 0; }
+.player-nav-title.visible { opacity: 1; }
 .nav-right-btn {
   display: flex; align-items: center; gap: 6px;
   padding: 0 24px;
@@ -330,12 +330,26 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 /* Title + artist — below art */
 .player-identity-left { grid-row: 2; grid-column: 1; min-width: 0; }
+/* Title + inline edit button */
+.player-title-row {
+  display: flex; align-items: flex-start; gap: 10px;
+}
 .player-song-title {
   font-family: 'EB Garamond', serif; font-weight: 400;
   font-size: clamp(36px, 5.5vw, 72px); line-height: 0.95;
   letter-spacing: 0; color: var(--ink);
   word-break: break-word;
 }
+.player-edit-inline {
+  flex-shrink: 0; margin-top: 6px;
+  width: 28px; height: 28px; border-radius: 100px;
+  background: var(--chrome); border: 1px solid var(--line-strong);
+  color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.player-edit-inline:hover { background: var(--line); color: var(--ink); border-color: var(--ink); }
 .player-song-artist {
   font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 600;
   letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-top: 10px;
@@ -387,7 +401,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 }
 
 /* Lyrics */
-.lyric-body { padding: 0 32px 180px; }
+.lyric-body { padding: 0 32px 120px; }
 .sec-block {
   display: flex; align-items: baseline; gap: 16px;
   padding: 30px 0 8px; border-bottom: 1px solid var(--line-strong); margin-bottom: 0;
@@ -456,68 +470,208 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   color: var(--muted); min-width: 32px; text-align: center;
 }
 
-/* ---- Sticky footer: full-width play bar ---- */
-.player-footer {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--ink); z-index: 10; height: 80px;
-  transition: background 0.3s ease, transform 0.4s ease, opacity 0.4s ease;
+/* ---- Floating pill action bar ---- */
+.player-bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 16px calc(16px + env(safe-area-inset-bottom));
+  pointer-events: none; /* scrim layer — children re-enable */
 }
-.player-footer.playing {
-  background: var(--bg); border-top: 1px solid var(--line);
+/* Gradient scrim so lyrics don't bleed into pills */
+.player-bottom-bar::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 140px; pointer-events: none;
+  background: linear-gradient(to top, var(--bg) 45%, transparent);
+  transition: background 0.2s;
 }
-.player-footer.hidden-bar {
-  transform: translateY(100%); opacity: 0; pointer-events: none;
-}
-.foot-play {
-  width: 100%; height: 100%;
-  color: var(--bg); background: transparent;
+/* Base pill */
+.btm-btn {
+  position: relative; z-index: 1;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0; transition: color 0.3s ease, background 0.12s; cursor: pointer;
+  gap: 6px; cursor: pointer; border: none;
+  border-radius: 100px;
+  height: 52px;
+  font-family: 'Sora', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.25s ease;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
 }
-.player-footer.playing .foot-play { color: var(--ink); }
-.foot-play:hover { background: rgba(255,255,255,0.06); }
-.player-footer.playing .foot-play:hover { background: rgba(0,0,0,0.04); }
-
-/* ---- Nav slider panels (speed + size) ---- */
-.nav-slider-wrap {
-  position: relative; display: flex; align-items: stretch;
+.btm-btn:active { transform: scale(0.95); }
+/* Shared label style — ALL CAPS */
+.btm-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.9px; text-transform: uppercase;
 }
-.nav-slider-wrap .nav-right-btn {
-  position: relative; z-index: 22;
-  transition: color 0.12s, background 0.15s;
-}
-.nav-slider-wrap.active .nav-right-btn {
-  background: var(--surface); color: var(--ink);
-}
-.nav-slider-panel {
-  position: absolute; top: 100%; left: 0; right: 0;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 16px 0 18px;
+/* Back pill — ghost */
+.btm-back {
   background: var(--surface);
-  border-left: 1px solid var(--line);
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  max-height: 0; overflow: hidden; opacity: 0;
-  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.25s ease;
-  z-index: 21;
+  border: 1.5px solid var(--line-strong);
+  color: var(--ink);
+  padding: 0 20px 0 14px;
 }
-.nav-slider-panel.open {
-  max-height: 200px; opacity: 1; padding: 16px 0 18px;
+.btm-back .btm-icon { font-size: 18px !important; line-height: 1; }
+/* Speed pill — ghost, hidden until playing */
+.btm-speed {
+  background: var(--surface);
+  border: 1.5px solid var(--line-strong);
+  color: var(--ink);
+  padding: 0 20px;
+  flex-direction: column; gap: 1px;
+  opacity: 0; pointer-events: none;
+  transform: scale(0.82) translateY(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
 }
-.nav-slider-label {
-  font-family: 'Sora', sans-serif; font-size: 9px; font-weight: 700;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2);
-  margin-bottom: 12px;
+.btm-speed.visible {
+  opacity: 1; pointer-events: auto;
+  transform: scale(1) translateY(0);
 }
-.nav-slider-range {
-  writing-mode: vertical-lr; direction: rtl;
-  appearance: slider-vertical;
-  width: 48px; height: 120px;
-  accent-color: var(--chord); cursor: pointer;
+.btm-speed-val {
+  font-size: 17px; font-weight: 700; line-height: 1;
 }
+.btm-speed-sub {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--muted);
+}
+/* Play/Pause pill — filled, always dominant */
+.btm-play {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0 24px 0 18px;
+  gap: 8px;
+}
+.btm-play-icon { font-size: 24px !important; line-height: 1; }
+/* Speed cycle feedback pulse */
+@keyframes speedPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.btm-speed.speed-pulse { animation: speedPulse 0.2s ease; }
 
+
+
+/* ===================================================
+   GLOBAL SETTINGS SHEET
+   =================================================== */
+.gs-overlay {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(16,14,8,0.48);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: flex-end;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.gs-overlay.open {
+  opacity: 1; pointer-events: auto;
+}
+.gs-sheet {
+  width: 100%; max-width: 640px; margin: 0 auto;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  border-top: 1px solid var(--line-strong);
+  padding: 0 0 calc(24px + env(safe-area-inset-bottom));
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.18);
+}
+.gs-overlay.open .gs-sheet {
+  transform: translateY(0);
+}
+.gs-handle {
+  width: 36px; height: 4px; border-radius: 100px;
+  background: var(--line-strong);
+  margin: 12px auto 0;
+}
+.gs-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.gs-title {
+  font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted);
+}
+.gs-close {
+  width: 32px; height: 32px; border-radius: 100px;
+  background: var(--chrome); border: none; cursor: pointer;
+  color: var(--ink); display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s;
+}
+.gs-close:hover { background: var(--line); }
+/* Cards */
+.gs-card {
+  margin: 16px 20px 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 18px 20px;
+}
+.gs-card-label {
+  font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 14px;
+}
+/* Theme pills */
+.gs-theme-row {
+  display: flex; gap: 10px;
+}
+.gs-theme-pill {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 16px; border-radius: 100px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface); color: var(--muted);
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.4px; cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.gs-theme-pill.active {
+  background: var(--ink); color: var(--bg);
+  border-color: var(--ink);
+}
+.gs-theme-pill:not(.active):hover { color: var(--ink); border-color: var(--ink); }
+/* Size preview */
+.gs-preview {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.gs-preview-row {
+  display: flex; gap: 12px; margin-bottom: 2px;
+}
+.gs-chord {
+  font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--chord); letter-spacing: 0.3px;
+  background: var(--tag-bg); color: var(--tag-ink);
+  padding: 1px 7px; border-radius: 100px;
+}
+.gs-preview-lyric {
+  font-family: 'EB Garamond', serif;
+  font-size: var(--lyric-size, 28px);
+  color: var(--ink); line-height: 1.35;
+  margin-bottom: 10px;
+  transition: font-size 0.15s ease;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* Size slider row */
+.gs-size-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.gs-size-a {
+  font-family: 'EB Garamond', serif; color: var(--muted); flex-shrink: 0;
+  line-height: 1;
+}
+.gs-size-sm { font-size: 16px; }
+.gs-size-lg { font-size: 28px; }
+.gs-size-range {
+  flex: 1; accent-color: var(--chord); cursor: pointer; height: 4px;
+}
 
 /* ===================================================
    MODAL — shared for Add + Edit
@@ -723,13 +877,19 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .entry-key { font-size: 14px; }
 
   /* FAB */
-  .fab-add { bottom: 20px; right: 16px; height: 52px; padding: 0 20px 0 16px; }
+  .fab-add { bottom: 20px; right: 16px; height: 48px; padding: 0 18px 0 14px; }
   .fab-add .mi { font-size: 20px; }
 
   /* Player nav */
   .player-nav { min-height: 52px; }
-  .back-link { padding: 0 16px; font-size: 10px; }
   .nav-right-btn { padding: 0 12px; font-size: 10px; }
+  /* Bottom pills — tighter on iPhone */
+  .player-bottom-bar { padding: 0 12px calc(14px + env(safe-area-inset-bottom)); }
+  .btm-btn { height: 48px; }
+  .btm-back { padding: 0 16px 0 12px; }
+  .btm-play { padding: 0 20px 0 14px; }
+  .btm-play-icon { font-size: 22px !important; }
+  .btm-speed { padding: 0 16px; }
   .preview-header, .preview-body, .lyric-body { padding-left: 16px; padding-right: 16px; }
 
   /* Player identity — stacked vertical on mobile */
@@ -740,6 +900,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   .player-art-block { grid-row: auto; grid-column: auto; display: flex; }
   .player-art-img { width: 120px; height: 120px; }
   .player-identity-left { grid-row: auto; grid-column: auto; text-align: center; margin-bottom: 20px; }
+  .player-title-row { justify-content: center; }
   .player-key-wrap { grid-row: auto; grid-column: auto; align-self: center; }
   .player-song-title { font-size: 28px; letter-spacing: 0; }
   .player-song-artist { margin-top: 6px; }
@@ -752,17 +913,10 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 
   /* Lyrics */
   .lyric-line { line-height: 1.7; }
-  .lyric-body { padding-bottom: 140px; }
-
-  /* Footer play bar */
-  .player-footer { height: 64px; }
+  .lyric-body { padding-bottom: 100px; }
 
   /* Comments */
   .comments-body { font-size: 18px; padding: 12px 16px 16px; }
-
-  /* Sliders — finger-friendly on mobile */
-  .nav-slider-range { width: 48px; height: 100px; }
-  .nav-slider-panel { min-width: 56px; }
 
   /* Splash */
   .splash-text { font-size: 48px; }
@@ -796,8 +950,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
       <span class="wordmark-title">Hey June!</span>
     </div>
     <div class="masthead-right">
-      <button class="nav-right-btn" id="themeBtn" aria-label="Toggle theme">
-        <span class="mi" style="text-transform:none;letter-spacing:0;">dark_mode</span>
+      <button class="nav-right-btn" id="settingsBtn" aria-label="Global settings">
+        <span class="mi" style="font-size:20px;text-transform:none;letter-spacing:0;">tune</span>
       </button>
     </div>
   </header>
@@ -827,35 +981,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
      =================================================== -->
 <section id="player" class="screen" aria-label="Chord player">
   <nav class="player-nav">
-    <button class="back-link" id="backBtn"><span class="mi" style="font-size:20px;vertical-align:middle;margin-right:4px;">arrow_back</span>Library</button>
-    <div class="nav-right">
-      <div class="nav-slider-wrap" id="speedWrap">
-        <button class="nav-right-btn" id="speedToggle" aria-label="Scroll speed">
-          <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">speed</span>
-        </button>
-        <div class="nav-slider-panel" id="speedPanel">
-          <span class="nav-slider-label">Speed</span>
-          <input type="range" id="speedRange" min="2" max="10" step="2" value="2"
-                 orient="vertical" aria-label="Scroll speed" class="nav-slider-range">
-        </div>
-      </div>
-      <div class="nav-slider-wrap" id="sizeWrap">
-        <button class="nav-right-btn" id="sizeToggle" aria-label="Text size">
-          <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">format_size</span>
-        </button>
-        <div class="nav-slider-panel" id="sizePanel">
-          <span class="nav-slider-label">Size</span>
-          <input type="range" id="sizeRange" min="16" max="38" step="2" value="28"
-                 orient="vertical" aria-label="Text size" class="nav-slider-range">
-        </div>
-      </div>
-      <button class="nav-right-btn" id="playerEditBtn" aria-label="Edit song">
-        <span class="mi" style="font-size:18px; text-transform:none; letter-spacing:0;">edit</span>
-      </button>
-      <button class="nav-right-btn" id="playerThemeBtn" aria-label="Toggle theme">
-        <span class="mi" style="text-transform:none; letter-spacing:0;">dark_mode</span>
-      </button>
-    </div>
+    <div class="player-nav-title" id="playerNavTitle"></div>
   </nav>
 
   <!-- Art (left) + Title (centre) + Key (right) -->
@@ -864,7 +990,12 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
       <div class="player-art-img" id="playerArtImg"></div>
     </div>
     <div class="player-identity-left">
-      <div class="player-song-title" id="playerTitle">—</div>
+      <div class="player-title-row">
+        <div class="player-song-title" id="playerTitle">—</div>
+        <button class="player-edit-inline" id="playerEditBtn" aria-label="Edit song">
+          <span class="mi" style="font-size:15px;text-transform:none;letter-spacing:0;">edit</span>
+        </button>
+      </div>
       <div class="player-song-artist" id="playerArtist">—</div>
     </div>
     <div class="player-key-wrap">
@@ -905,12 +1036,74 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 
   <div class="lyric-body" id="lyricArea" tabindex="0" aria-label="Lyrics and chords"></div>
 
-  <footer class="player-footer">
-    <button class="foot-play" id="playBtn" aria-label="Play auto-scroll">
-      <span class="mi" style="font-size:40px;">play_arrow</span>
+  <footer class="player-bottom-bar" id="playerBottomBar">
+    <button class="btm-btn btm-back" id="backBtn" aria-label="Back to library">
+      <span class="mi btm-icon">arrow_back</span>
+      <span class="btm-label">Library</span>
+    </button>
+    <button class="btm-btn btm-speed" id="speedCycleBtn" aria-label="Scroll speed" aria-hidden="true">
+      <span class="btm-speed-val" id="speedLabel">1×</span>
+      <span class="btm-speed-sub">Speed</span>
+    </button>
+    <button class="btm-btn btm-play" id="playBtn" aria-label="Play auto-scroll">
+      <span class="mi btm-play-icon">play_arrow</span>
+      <span class="btm-label btm-play-label">Play</span>
     </button>
   </footer>
 </section>
+
+<!-- ===================================================
+     GLOBAL SETTINGS SHEET
+     =================================================== -->
+<div class="gs-overlay" id="gsOverlay" role="dialog" aria-modal="true" aria-label="Global settings">
+  <div class="gs-sheet" id="gsSheet">
+    <div class="gs-handle"></div>
+    <div class="gs-header">
+      <span class="gs-title">Settings</span>
+      <button class="gs-close" id="gsClose" aria-label="Close settings">
+        <span class="mi" style="font-size:20px;text-transform:none;letter-spacing:0;">close</span>
+      </button>
+    </div>
+
+    <!-- Theme card -->
+    <div class="gs-card">
+      <div class="gs-card-label">Theme</div>
+      <div class="gs-theme-row">
+        <button class="gs-theme-pill" id="gsThemeLight" data-theme="light">
+          <span class="mi" style="font-size:18px;text-transform:none;letter-spacing:0;">light_mode</span>
+          <span>Light</span>
+        </button>
+        <button class="gs-theme-pill" id="gsThemeDark" data-theme="dark">
+          <span class="mi" style="font-size:18px;text-transform:none;letter-spacing:0;">dark_mode</span>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Text size card -->
+    <div class="gs-card">
+      <div class="gs-card-label">Text size</div>
+      <!-- Live preview block -->
+      <div class="gs-preview" id="gsPreview">
+        <div class="gs-preview-row">
+          <span class="gs-chord">G</span><span class="gs-chord">Em</span>
+        </div>
+        <div class="gs-preview-lyric" id="gsPreviewLyric">Here comes the sun, little darling</div>
+        <div class="gs-preview-row">
+          <span class="gs-chord">C</span><span class="gs-chord">D7</span>
+        </div>
+        <div class="gs-preview-lyric" id="gsPreviewLyric2">It's been a long, cold lonely winter</div>
+      </div>
+      <!-- Slider row -->
+      <div class="gs-size-row">
+        <span class="gs-size-a gs-size-sm">A</span>
+        <input type="range" id="gsSizeRange" min="16" max="38" step="2" value="28"
+               class="gs-size-range" aria-label="Text size">
+        <span class="gs-size-a gs-size-lg">A</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Chord popover -->
 <div class="chord-pop" id="chordPop" role="tooltip">
@@ -3523,7 +3716,7 @@ function renderBody(body,steps){
 function load(){
   try{const r=localStorage.getItem(SK);if(r){const o=JSON.parse(r);state.songs=o.songs||[];state.recent=o.recent||[];state.theme=o.theme||'light';}}catch(e){}
   PRELOADED.forEach(p=>{if(!state.songs.find(s=>s.id===p.id))state.songs.push(p);});
-  document.body.setAttribute('data-theme',state.theme);updateThemeIcons();
+  document.body.setAttribute('data-theme',state.theme);
 }
 function save(){try{localStorage.setItem(SK,JSON.stringify({songs:state.songs,recent:state.recent,theme:state.theme}));}catch(e){}}
 
@@ -3588,8 +3781,10 @@ function openSong(id){
   document.getElementById('playerArtist').textContent=s.artist.toUpperCase();
   document.getElementById('bpmLabel').textContent=`${s.bpm||86} bpm`;
   document.getElementById('strumSvg').innerHTML=strumSvg();
-  document.getElementById('sizeRange').value=state.fontSize;
   renderPlayer();window.scrollTo(0,0);
+  // Update ghost nav title
+  document.getElementById('playerNavTitle').textContent=s.title;
+  document.getElementById('playerNavTitle').classList.remove('visible');
   try{if('wakeLock' in navigator)navigator.wakeLock.request('screen');}catch(e){}
 }
 function renderPlayer(){
@@ -3640,7 +3835,7 @@ function renderPlayer(){
     el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showPop(el);}});
   });
 }
-function closePlayer(){stopScroll();document.getElementById('player').classList.remove('active');document.getElementById('library').classList.add('active');document.getElementById('addSongBtn').classList.remove('hidden');state.current=null;renderLib(document.getElementById('searchInput').value);}
+function closePlayer(){resetBottomBar();document.getElementById('player').classList.remove('active');document.getElementById('library').classList.add('active');document.getElementById('addSongBtn').classList.remove('hidden');state.current=null;renderLib(document.getElementById('searchInput').value);}
 
 /* ---- Chord pop with voicing navigation ---- */
 let popState = { chord: null, idx: 0, count: 0, anchorEl: null };
@@ -3686,44 +3881,73 @@ function popNav(dir){
 function hidePop(){document.getElementById('chordPop').classList.remove('open');}
 
 /* ---- Auto scroll ---- */
-let footerHideTimer=null;
-let footerHovered=false;
-function hideFooterBar(){
-  if(footerHovered)return;
-  document.querySelector('.player-footer').classList.add('hidden-bar');
+const SPEED_PRESETS=[
+  {label:'0.5×',value:2},
+  {label:'0.75×',value:4},
+  {label:'1×',value:5},
+  {label:'1.25×',value:7},
+  {label:'1.5×',value:9},
+];
+let speedPresetIdx=2; // default: 1×
+
+function cycleSpeed(){
+  speedPresetIdx=(speedPresetIdx+1)%SPEED_PRESETS.length;
+  const p=SPEED_PRESETS[speedPresetIdx];
+  state.scrollSpeed=p.value;
+  document.getElementById('speedLabel').textContent=p.label;
+  // brief pulse animation for feedback
+  const btn=document.getElementById('speedCycleBtn');
+  btn.classList.add('speed-pulse');
+  setTimeout(()=>btn.classList.remove('speed-pulse'),200);
 }
-function showFooterBar(){
-  document.querySelector('.player-footer').classList.remove('hidden-bar');
-  clearTimeout(footerHideTimer);
-  if(state.scrollPlaying && !footerHovered){
-    footerHideTimer=setTimeout(hideFooterBar,3000);
-  }
-}
+
 function startScroll(){
   state.scrollPlaying=true;
-  const footer=document.querySelector('.player-footer');
-  footer.classList.add('playing');
-  document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">pause</span>';
-  footerHideTimer=setTimeout(hideFooterBar,3000);
+  // show speed button
+  document.getElementById('speedCycleBtn').classList.add('visible');
+  document.getElementById('speedCycleBtn').removeAttribute('aria-hidden');
+  // switch to pause icon + label
+  document.getElementById('playBtn').querySelector('.btm-play-icon').textContent='pause';
+  document.getElementById('playBtn').querySelector('.btm-play-label').textContent='Pause';
+  document.getElementById('playBtn').setAttribute('aria-label','Pause auto-scroll');
   let last=performance.now();
-  const step=now=>{if(!state.scrollPlaying)return;const dt=(now-last)/1000;last=now;window.scrollBy(0,state.scrollSpeed*8*dt);if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}state.scrollRaf=requestAnimationFrame(step);};
+  const step=now=>{
+    if(!state.scrollPlaying)return;
+    const dt=(now-last)/1000;last=now;
+    window.scrollBy(0,state.scrollSpeed*8*dt);
+    if(window.innerHeight+window.scrollY>=document.body.offsetHeight-2){stopScroll();return;}
+    state.scrollRaf=requestAnimationFrame(step);
+  };
   state.scrollRaf=requestAnimationFrame(step);
 }
+
 function stopScroll(){
-  state.scrollPlaying=false;if(state.scrollRaf)cancelAnimationFrame(state.scrollRaf);
-  clearTimeout(footerHideTimer);
-  const footer=document.querySelector('.player-footer');
-  footer.classList.remove('playing','hidden-bar');
-  document.getElementById('playBtn').innerHTML='<span class="mi" style="font-size:40px;">play_arrow</span>';
+  state.scrollPlaying=false;
+  if(state.scrollRaf)cancelAnimationFrame(state.scrollRaf);
+  // reset to play icon + label (speed button stays visible once revealed)
+  document.getElementById('playBtn').querySelector('.btm-play-icon').textContent='play_arrow';
+  document.getElementById('playBtn').querySelector('.btm-play-label').textContent='Play';
+  document.getElementById('playBtn').setAttribute('aria-label','Play auto-scroll');
 }
+
+function resetBottomBar(){
+  // full reset when leaving the player
+  stopScroll();
+  document.getElementById('speedCycleBtn').classList.remove('visible');
+  document.getElementById('speedCycleBtn').setAttribute('aria-hidden','true');
+  speedPresetIdx=2;
+  state.scrollSpeed=SPEED_PRESETS[2].value;
+  document.getElementById('speedLabel').textContent=SPEED_PRESETS[2].label;
+}
+
 function toggleScroll(){state.scrollPlaying?stopScroll():startScroll();}
 
 /* ---- Theme ---- */
-function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';document.body.setAttribute('data-theme',state.theme);save();updateThemeIcons();}
-function updateThemeIcons(){
-  const icon=state.theme==='dark'?'light_mode':'dark_mode';
-  document.getElementById('themeBtn').innerHTML=`<span class="mi" style="text-transform:none;letter-spacing:0;">${icon}</span>`;
-  document.getElementById('playerThemeBtn').innerHTML=`<span class="mi" style="text-transform:none;letter-spacing:0;">${icon}</span>`;
+function setTheme(t){state.theme=t;document.body.setAttribute('data-theme',t);save();syncThemePills();}
+function toggleTheme(){setTheme(state.theme==='light'?'dark':'light');}
+function syncThemePills(){
+  document.getElementById('gsThemeLight').classList.toggle('active',state.theme==='light');
+  document.getElementById('gsThemeDark').classList.toggle('active',state.theme==='dark');
 }
 
 /* ---- Modal: album art handling ---- */
@@ -3833,7 +4057,7 @@ function showToast(m){const t=document.getElementById('toast');t.textContent=m;t
 
 /* ---- Boot ---- */
 document.addEventListener('DOMContentLoaded',()=>{
-  load(); renderLib();
+  load(); renderLib(); syncThemePills();
 
 
   /* Splash — shows for 3 s, then fades out cleanly */
@@ -3851,7 +4075,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* Library */
   document.getElementById('searchInput').addEventListener('input',e=>renderLib(e.target.value));
   document.getElementById('addSongBtn').addEventListener('click',openAddModal);
-  document.getElementById('themeBtn').addEventListener('click',toggleTheme);
+  document.getElementById('settingsBtn').addEventListener('click',openSettings);
 
   /* Modal */
   document.getElementById('closeModal').addEventListener('click',closeModal);
@@ -3877,38 +4101,52 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   /* Player */
   document.getElementById('backBtn').addEventListener('click',closePlayer);
-  document.getElementById('playerThemeBtn').addEventListener('click',toggleTheme);
   document.getElementById('playerEditBtn').addEventListener('click',()=>{if(state.current)openEditModal(state.current.id);});
   document.getElementById('transUp').addEventListener('click',()=>{state.transposeSteps++;renderPlayer();});
   document.getElementById('transDown').addEventListener('click',()=>{state.transposeSteps--;renderPlayer();});
   document.getElementById('playBtn').addEventListener('click',toggleScroll);
-  document.getElementById('speedRange').addEventListener('input',e=>{state.scrollSpeed=parseInt(e.target.value);});
-  document.getElementById('sizeRange').addEventListener('input',e=>{state.fontSize=parseInt(e.target.value);renderPlayer();});
-  const footerEl=document.querySelector('.player-footer');
-  footerEl.addEventListener('mouseenter',()=>{footerHovered=true;clearTimeout(footerHideTimer);});
-  footerEl.addEventListener('mouseleave',()=>{footerHovered=false;if(state.scrollPlaying){footerHideTimer=setTimeout(hideFooterBar,3000);}});
-  footerEl.addEventListener('touchstart',()=>{footerHovered=true;clearTimeout(footerHideTimer);},{passive:true});
-  footerEl.addEventListener('touchend',()=>{footerHovered=false;if(state.scrollPlaying){footerHideTimer=setTimeout(hideFooterBar,3000);}},{passive:true});
+  document.getElementById('speedCycleBtn').addEventListener('click',cycleSpeed);
 
-  /* Nav slider panels — toggle open/close, close on outside click */
-  function closeAllPanels(){
-    document.querySelectorAll('.nav-slider-panel').forEach(p=>p.classList.remove('open'));
-    document.querySelectorAll('.nav-slider-wrap').forEach(w=>w.classList.remove('active'));
+  /* ---- Global Settings sheet ---- */
+  function openSettings(){
+    // sync current values into the sheet
+    syncThemePills();
+    document.getElementById('gsSizeRange').value=state.fontSize;
+    updateSizePreview(state.fontSize);
+    document.getElementById('gsOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
   }
-  function togglePanel(btnId,panelId,wrapId){
-    document.getElementById(btnId).addEventListener('click',e=>{
-      e.stopPropagation();
-      const panel=document.getElementById(panelId);
-      const wrap=document.getElementById(wrapId);
-      const wasOpen=panel.classList.contains('open');
-      closeAllPanels();
-      if(!wasOpen){panel.classList.add('open');wrap.classList.add('active');}
-    });
+  function closeSettings(){
+    document.getElementById('gsOverlay').classList.remove('open');
+    document.body.style.overflow='';
+    if(state.current) renderPlayer();
   }
-  togglePanel('speedToggle','speedPanel','speedWrap');
-  togglePanel('sizeToggle','sizePanel','sizeWrap');
-  document.querySelectorAll('.nav-slider-panel').forEach(p=>p.addEventListener('click',e=>e.stopPropagation()));
-  document.addEventListener('click',()=>closeAllPanels());
+  function updateSizePreview(sz){
+    document.documentElement.style.setProperty('--lyric-size',sz+'px');
+    // keep both preview lines at the same size via CSS var
+  }
+  // Theme pills
+  document.getElementById('gsThemeLight').addEventListener('click',()=>setTheme('light'));
+  document.getElementById('gsThemeDark').addEventListener('click',()=>setTheme('dark'));
+  // Global size range — live preview
+  document.getElementById('gsSizeRange').addEventListener('input',e=>{
+    state.fontSize=parseInt(e.target.value);
+    updateSizePreview(state.fontSize);
+  });
+  // Close triggers
+  document.getElementById('gsClose').addEventListener('click',closeSettings);
+  document.getElementById('gsOverlay').addEventListener('click',e=>{
+    if(e.target.id==='gsOverlay') closeSettings();
+  });
+  // Swipe down to close
+  (function(){
+    const sheet=document.getElementById('gsSheet');
+    let startY=0;
+    sheet.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;},{passive:true});
+    sheet.addEventListener('touchend',e=>{
+      if(e.changedTouches[0].clientY-startY>60) closeSettings();
+    },{passive:true});
+  })();
   document.getElementById('popPrev').addEventListener('click',e=>{e.stopPropagation();popNav(-1);});
   document.getElementById('popNext').addEventListener('click',e=>{e.stopPropagation();popNav(1);});
   document.getElementById('previewToggle').addEventListener('click',()=>{
@@ -3925,11 +4163,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('lyricArea').addEventListener('click',e=>{
     if(e.target.closest('.chord-token'))return;
     hidePop();
-    if(state.scrollPlaying && document.querySelector('.player-footer').classList.contains('hidden-bar')){
-      showFooterBar();
-    } else {
-      toggleScroll();
-    }
+    toggleScroll();
   });
   document.addEventListener('click',e=>{if(!e.target.closest('#chordPop')&&!e.target.closest('.chord-token'))hidePop();});
   document.addEventListener('keydown',e=>{
@@ -3940,6 +4174,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(e.key==='ArrowDown'){state.transposeSteps--;renderPlayer();}
     if(e.key==='Escape'){hidePop();closePlayer();}
   });
+  /* Nav title — appears once identity section scrolls out of view */
+  window.addEventListener('scroll',()=>{
+    if(!document.getElementById('player').classList.contains('active'))return;
+    const identity=document.querySelector('.player-identity');
+    if(!identity)return;
+    const gone=identity.getBoundingClientRect().bottom<0;
+    document.getElementById('playerNavTitle').classList.toggle('visible',gone);
+  },{passive:true});
+
   document.addEventListener('visibilitychange',()=>{
     if(document.visibilityState==='visible'&&document.getElementById('player').classList.contains('active'))
       try{navigator.wakeLock.request('screen');}catch(e){}
